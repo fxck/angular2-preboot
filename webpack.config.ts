@@ -198,10 +198,6 @@ const devConfig = function () {
       context: '.',
       manifest: require(`./dll/vendors-manifest.json`),
     }),
-    new DllReferencePlugin({
-      context: '.',
-      manifest: require(`./dll/rxjs-manifest.json`),
-    }),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       meta: meta,
