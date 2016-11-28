@@ -1,12 +1,24 @@
 /* tslint:disable: variable-name max-line-length no-var-requires no-unused-variable */
 
+/**
+ *
+ * - imports
+ * - config
+ * - common
+ * - dev
+ * - dll
+ * - prod
+ * - webpack
+ */
+
+// imports
 import 'ts-helpers';
 import {
   ContextReplacementPlugin,
   DllPlugin,
   DllReferencePlugin,
   DefinePlugin,
-  // NoErrorsPlugin,
+  // NoErrorsPlugin, // quality
   ProgressPlugin,
 } from 'webpack';
 import { AotPlugin } from '@ngtools/webpack';
@@ -26,7 +38,7 @@ import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
 
-// Configuration
+// config
 import {
   CUSTOM_COPY_FOLDERS,
   CUSTOM_DEV_SERVER_OPTIONS,
@@ -74,12 +86,12 @@ const COPY_FOLDERS = [
 
 ];
 
-// Dll
+// is dll
 if (!isDll && isDev) {
   tryDll(['polyfills', 'vendors', 'rxjs']);
 }
 
-// Common
+// common
 const commonConfig = function webpackConfig(): WebpackConfig {
 
   const config: WebpackConfig = {} as WebpackConfig;
@@ -162,7 +174,7 @@ const commonConfig = function webpackConfig(): WebpackConfig {
 
 };
 
-// Development
+// dev
 const devConfig = function () {
 
   const config: WebpackConfig = {} as WebpackConfig;
@@ -237,7 +249,7 @@ const devConfig = function () {
 
 };
 
-// Dll
+// dll
 const dllConfig = () => {
 
   const config: WebpackConfig = {} as WebpackConfig;
@@ -266,7 +278,7 @@ const dllConfig = () => {
 
 };
 
-// Production
+// prod
 const prodConfig = () => {
 
   const config: WebpackConfig = {} as WebpackConfig;
@@ -288,7 +300,7 @@ const prodConfig = () => {
   };
 
   config.plugins = [
-    // new NoErrorsPlugin(),
+    // new NoErrorsPlugin(), // quality
     new CommonsChunkPlugin({
       name: ['polyfills', 'vendors', 'rxjs'].reverse(),
     }),
@@ -347,7 +359,7 @@ const prodConfig = () => {
 
 };
 
-// Default
+// default
 const defaultConfig = () => {
 
   const config: WebpackConfig = {} as WebpackConfig;
@@ -360,7 +372,7 @@ const defaultConfig = () => {
 
 };
 
-// Webpack
+// webpack
 switch (ENV) {
   case 'prod':
   case 'production':
