@@ -1,6 +1,6 @@
 {
   "name": "angular2-preboot",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A teeny tiny Angular 2 template to get your next great project booted. It is powered by great ideas and Webpack 2",
   "keywords": [
     "angular2",
@@ -50,7 +50,7 @@
     "server": "npm run server:dev",
     "start": "npm run server:dev",
     "test": "cross-env NODE_ENV=testing karma start",
-    "tslint": "node_modules\/tslint\/bin\/tslint",
+    "tslint": "node_modules/tslint/bin/tslint",
     "typedoc": "typedoc",
     "version": "npm run build",
     "watch:dev": "npm run build:dev -- --watch",
