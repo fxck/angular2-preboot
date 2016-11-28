@@ -52,7 +52,7 @@ export class AboutComponent implements OnInit {
     setTimeout(() => {
 
       System.import('../../assets/mock-data/mock-data.json')
-        .then(json => {
+        .then((json) => {
           console.log('async mockData', json);
           this.localState = json;
         });

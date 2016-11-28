@@ -11,5 +11,4 @@ describe('App', () => {
       AppState,
       AppComponent,
     ]}));
-
 });

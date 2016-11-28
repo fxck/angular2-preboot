@@ -1,8 +1,8 @@
-import { fakeAsync } from '@angular/core/testing';
-import { tick } from '@angular/core/testing';
-import { TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser/src/dom/debug/by';
+import { Component } from '@angular/core';
+import { fakeAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { tick } from '@angular/core/testing';
 
 // Load the implementations that should be tested
 import { XLargeDirective } from './x-large.directive';
