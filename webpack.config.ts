@@ -21,6 +21,7 @@ import {
   // NoErrorsPlugin, // quality
   ProgressPlugin,
 } from 'webpack';
+import * as process from 'process';
 import { AotPlugin } from '@ngtools/webpack';
 import * as LoaderOptionsPlugin from 'webpack/lib/LoaderOptionsPlugin';
 
