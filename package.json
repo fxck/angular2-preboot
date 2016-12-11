@@ -18,7 +18,7 @@
     "build:dev": "cross-env NODE_ENV=development webpack --progress --profile",
     "build:analyze": "cross-env NODE_ENV=development webpack --progress --profile",
     "build:docker": "npm run build:prod && docker build -t angular2-webpack-start:latest .",
-    "build:prod": "cross-env NODE_ENV=production webpack  --progress --profile --bail",
+    "build:prod": "cross-env NODE_ENV=production webpack  --progress --profile --bail --debug",
     "build:aot": "cross-env NODE_ENV=production webpack --progress --profile",
     "build": "npm run build:dev",
     "ci": "npm test && npm run e2e",

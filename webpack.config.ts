@@ -23,6 +23,7 @@ import {
 } from 'webpack';
 import * as process from 'process';
 import { AotPlugin } from '@ngtools/webpack';
+import { CheckerPlugin } from 'awesome-typescript-loader';
 import * as LoaderOptionsPlugin from 'webpack/lib/LoaderOptionsPlugin';
 
 import * as CommonsChunkPlugin from 'webpack/lib/optimize/CommonsChunkPlugin';
@@ -154,6 +155,7 @@ const commonConfig = function webpackConfig(): WebpackConfig {
     }),
     new NamedModulesPlugin(),
     new ProgressPlugin(),
+    new CheckerPlugin(),
 
     ...CUSTOM_PLUGINS_COMMON,
 
@@ -180,7 +182,7 @@ const devConfig = function () {
 
   const config: WebpackConfig = {} as WebpackConfig;
 
-  config.devtool = 'cheap-module-source-map';
+  config.devtool = 'source-map';
 
   config.resolve = {
     modules: [root(`src`), `node_modules`],
