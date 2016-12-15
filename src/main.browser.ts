@@ -19,4 +19,3 @@ export function main() {
 
 // use bootloader in case of async tag
 bootloader(main);
-

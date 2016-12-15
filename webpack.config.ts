@@ -3,6 +3,7 @@
 /**
  *
  * - imports
+ * - custom
  * - config
  * - common
  * - dev
@@ -38,7 +39,7 @@ import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
 
-// config
+// custom
 import {
   CUSTOM_COPY_FOLDERS,
   CUSTOM_DEV_SERVER_OPTIONS,
@@ -64,16 +65,17 @@ import {
 import head from './config/head';
 import meta from './config/meta';
 
+// config
 const EVENT = process.env.npm_lifecycle_event;
-const ENV = process.env.NODE_ENV || 'development';
+const ENV   = process.env.NODE_ENV || 'development';
 
 const isDev = EVENT.includes('dev');
 const isDll = EVENT.includes('dll');
 const isAot = EVENT.includes('aot');
 
-const PORT = process.env.PORT ||
+const PORT  = process.env.PORT ||
   ENV === 'development' ? 3000 : 8080;
-const HOST = process.env.HOST || 'localhost';
+const HOST  = process.env.HOST || 'localhost';
 
 const COPY_FOLDERS = [
   { from: `src/assets` },
@@ -91,7 +93,7 @@ if (!isDll && isDev) {
 }
 
 // common
-const commonConfig = function webpackConfig(): WebpackConfig {
+const commonConfig = () => {
 
   const config: WebpackConfig = {} as WebpackConfig;
 
@@ -119,7 +121,7 @@ const commonConfig = function webpackConfig(): WebpackConfig {
         test: /\.css$/,
         use: [
           'to-string-loader',
-          'css-loader'
+          'css-loader',
         ],
       },
       {
@@ -175,7 +177,7 @@ const commonConfig = function webpackConfig(): WebpackConfig {
 };
 
 // dev
-const devConfig = function () {
+const devConfig = () => {
 
   const config: WebpackConfig = {} as WebpackConfig;
 
@@ -212,9 +214,9 @@ const devConfig = function () {
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      meta: meta,
-      isDev: isDev,
-      isWebpackDevServer: isWebpackDevServer,
+      meta,
+      isDev,
+      isWebpackDevServer,
       inject: true,
     }),
     new CopyWebpackPlugin(COPY_FOLDERS),
@@ -304,7 +306,7 @@ const prodConfig = () => {
     new CopyWebpackPlugin(COPY_FOLDERS),
     new HtmlWebpackPlugin({
       template: `src/index.html`,
-      meta: meta,
+      meta,
       inject: true,
     }),
     new LoaderOptionsPlugin({
