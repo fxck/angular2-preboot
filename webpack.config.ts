@@ -31,10 +31,8 @@ import * as MinChunkSizePlugin from 'webpack/lib/optimize/MinChunkSizePlugin';
 import * as NamedModulesPlugin from 'webpack/lib/NamedModulesPlugin';
 import * as UglifyJsPlugin from 'webpack/lib/optimize/UglifyJsPlugin';
 
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import * as CompressionPlugin from 'compression-webpack-plugin';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
-import * as DashboardPlugin from 'webpack-dashboard/plugin';
 import * as HtmlElementsPlugin from './config/html-elements-plugin';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
@@ -72,7 +70,6 @@ const ENV = process.env.NODE_ENV || 'development';
 const isDev = EVENT.includes('dev');
 const isDll = EVENT.includes('dll');
 const isAot = EVENT.includes('aot');
-const isAnalyze = EVENT.includes('analyze');
 
 const PORT = process.env.PORT ||
   ENV === 'development' ? 3000 : 8080;
@@ -221,20 +218,10 @@ const devConfig = function () {
       inject: true,
     }),
     new CopyWebpackPlugin(COPY_FOLDERS),
-    new DashboardPlugin(),
 
     ...CUSTOM_PLUGINS_DEV,
 
   ];
-
-  if (isAnalyze) {
-    config.plugins.push(new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      reportFilename: 'report.html',
-      openAnalyzer: true,
-      statsFilename: 'stats.json',
-    }));
-  }
 
   if (isWebpackDevServer) {
     config.devServer = Object.assign(
