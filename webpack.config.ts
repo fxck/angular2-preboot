@@ -30,6 +30,7 @@ import * as LoaderOptionsPlugin from 'webpack/lib/LoaderOptionsPlugin';
 import * as CommonsChunkPlugin from 'webpack/lib/optimize/CommonsChunkPlugin';
 import * as MinChunkSizePlugin from 'webpack/lib/optimize/MinChunkSizePlugin';
 import * as NamedModulesPlugin from 'webpack/lib/NamedModulesPlugin';
+import * as OccurrenceOrderPlugin from 'webpack/lib/optimize/OccurrenceOrderPlugin';
 import * as UglifyJsPlugin from 'webpack/lib/optimize/UglifyJsPlugin';
 
 import * as CompressionPlugin from 'compression-webpack-plugin';
@@ -296,6 +297,7 @@ const prodConfig = () => {
     new CommonsChunkPlugin({
       name: ['polyfills', 'vendors', 'rxjs'].reverse(),
     }),
+    new OccurrenceOrderPlugin(),
     new CompressionPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
