@@ -15,7 +15,6 @@
 // imports
 import 'ts-helpers';
 import {
-  ContextReplacementPlugin,
   DllPlugin,
   DllReferencePlugin,
   DefinePlugin,
@@ -142,10 +141,6 @@ const commonConfig = () => {
   };
 
   config.plugins = [
-    new ContextReplacementPlugin(
-      /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
-      root(`src`),
-    ),
     new DefinePlugin({
       'ENV': JSON.stringify(ENV),
       'process.env': JSON.stringify(process.env),

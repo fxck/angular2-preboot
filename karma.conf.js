@@ -31,7 +31,7 @@ module.exports = config => {
      * we are building the test environment in ./spec-bundle.js
      */
     files: [{
-      pattern: './config/spec-bundle.js',
+      pattern: './config/spec.js',
       watched: false
     }],
 
@@ -40,7 +40,7 @@ module.exports = config => {
      * available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
      */
     preprocessors: {
-      './config/spec-bundle.js': ['coverage', 'webpack', 'sourcemap']
+      './config/spec.js': ['coverage', 'webpack', 'sourcemap']
     },
 
     // Webpack Config at ./webpack.test.js
@@ -62,18 +62,13 @@ module.exports = config => {
             ]
           }, {
             test: /\.ts$/,
-            use: 'awesome-typescript-loader',
-            query: {
-              sourceMap: false,
-              inlineSourceMap: true,
-              compilerOptions: {
+            use: [
+              {
+                loader: 'awesome-typescript-loader',
 
-                // Remove TypeScript helpers to be injected
-                // below by DefinePlugin
-                removeComments: true
-
-              }
-            },
+              },
+              'angular2-template-loader',
+            ],
             exclude: [/\.e2e\.ts$/]
           }, {
             test: /\.json$/,
@@ -119,6 +114,15 @@ module.exports = config => {
       ],
 
       /**
+       * Disable performance hints
+       *
+       * See: https://github.com/a-tarasyuk/rr-boilerplate/blob/master/webpack/dev.config.babel.js#L41
+       */
+      performance: {
+        hints: false
+      },
+
+      /**
        * Include polyfills or mocks for various node stuff
        * Description: Node configuration
        *
@@ -136,7 +140,14 @@ module.exports = config => {
 
     // Webpack please don't spam the console when running in karma!
     webpackMiddleware: {
-      stats: 'errors-only'
+      // webpack-dev-middleware configuration
+      // i.e.
+      noInfo: true,
+      // and use stats to turn off verbose output
+      stats: {
+        // options i.e. 
+        chunks: false
+      }
     },
 
     /*
