@@ -192,7 +192,7 @@ const devConfig = () => {
 
   const config: WebpackConfig = {} as WebpackConfig;
 
-  config.devtool = 'source-map';
+  config.devtool = 'eval-source-map';
 
   config.resolve = {
     modules: [root(`src`), `node_modules`],
