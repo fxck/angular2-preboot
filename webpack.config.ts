@@ -25,6 +25,7 @@ import * as process from 'process';
 import { AotPlugin } from '@ngtools/webpack';
 import { CheckerPlugin } from 'awesome-typescript-loader';
 import * as LoaderOptionsPlugin from 'webpack/lib/LoaderOptionsPlugin';
+import * as ContextReplacementPlugin from 'webpack/lib/ContextReplacementPlugin';
 
 import * as CommonsChunkPlugin from 'webpack/lib/optimize/CommonsChunkPlugin';
 import * as MinChunkSizePlugin from 'webpack/lib/optimize/MinChunkSizePlugin';
@@ -38,6 +39,7 @@ import * as HtmlElementsPlugin from './config/html-elements-plugin';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
+import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 
 // custom
 import {
@@ -64,6 +66,10 @@ import {
 
 import head from './config/head';
 import meta from './config/meta';
+import tsconfigJson = require('./tsconfig.json');
+
+const tsCompilerConfig =
+  Object.assign(tsconfigJson['compilerOptions'], { module: 'es2015'});
 
 // config
 const EVENT = process.env.npm_lifecycle_event;
@@ -107,7 +113,12 @@ const commonConfig = () => {
       {
         test: /\.ts$/,
         use: [
-          'awesome-typescript-loader',
+          {
+            loader: 'awesome-typescript-loader',
+            options: {
+              compilerConfig: tsCompilerConfig
+            }
+          },
           'angular2-template-loader',
           'angular-router-loader',
         ],
@@ -141,6 +152,7 @@ const commonConfig = () => {
   };
 
   config.plugins = [
+    new V8LazyParseWebpackPlugin(),
     new DefinePlugin({
       'ENV': JSON.stringify(ENV),
       'process.env': JSON.stringify(process.env),
@@ -151,6 +163,9 @@ const commonConfig = () => {
     new NamedModulesPlugin(),
     new ProgressPlugin(),
     new CheckerPlugin(),
+    new ContextReplacementPlugin(
+      /angular(\\|\/)core(\\|\/)src(\\|\/)linker/, root(`src`)
+    ),
 
     ...CUSTOM_PLUGINS_COMMON,
 
@@ -320,14 +335,16 @@ const prodConfig = () => {
       },
       compress: {
         screw_ie8: true,
+        warnings: false,
+        conditionals: true,
+        unused: true,
+        comparisons: true,
         sequences: true,
         dead_code: true,
-        conditionals: true,
-        booleans: true,
-        unused: true,
+        evaluate: true,
         if_return: true,
         join_vars: true,
-        drop_console: true,
+        negate_iife: false // we need this for lazy v8
       },
       comments: false,
     }),
