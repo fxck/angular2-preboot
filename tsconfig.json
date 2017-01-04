@@ -1,22 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
+    "noEmit": true,
     "noEmitHelpers": true,
-    "strictNullChecks": false,
-    "skipDefaultLibCheck": true,
-    "pretty": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "baseUrl": "./src",
+    "pretty": true,
+    "skipDefaultLibCheck": true,
+    "sourceMap": true,
+    "strictNullChecks": false,
+    "target": "es5",
     "lib": [
       "dom",
-      "es5",
-      "es6",
-      "es7"
+      "es6"
     ],
     "types": [
       "hammerjs",
