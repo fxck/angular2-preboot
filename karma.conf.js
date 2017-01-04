@@ -25,6 +25,10 @@ module.exports = config => {
     // list of files to exclude
     exclude: [],
 
+    client: {
+      captureConsole: false
+    },
+
     /*
      * list of files / patterns to load in the browser
      *
@@ -50,6 +54,16 @@ module.exports = config => {
       './config/spec.js': ['coverage', 'webpack', 'sourcemap']
     },
 
+    coverageReporter: {
+      type: 'in-memory'
+    },
+
+    remapCoverageReporter: {
+      'text-summary': null,
+      json: './coverage/coverage.json',
+      html: './coverage/html'
+    },
+
     // Webpack Config at ./webpack.test.js
     webpack: {
       devtool: 'inline-source-map',
@@ -72,7 +86,6 @@ module.exports = config => {
             use: [
               {
                 loader: 'awesome-typescript-loader',
-
               },
               'angular2-template-loader',
             ],
@@ -163,7 +176,7 @@ module.exports = config => {
      * possible values: 'dots', 'progress'
      * available reporters: https://npmjs.org/browse/keyword/karma-reporter
      */
-    reporters: ['mocha'],
+    reporters: ['mocha', 'coverage', 'remap-coverage'],
 
     // web server port
     port: 9876,
