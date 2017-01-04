@@ -12,9 +12,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "baseUrl": "./src",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "lib": [
       "dom",
       "es5",
@@ -38,8 +35,7 @@
   ],
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,
-    "useWebpackText": true,
-    "useCache": true
+    "useWebpackText": true
   },
   "compileOnSave": false,
   "buildOnSave": false,
