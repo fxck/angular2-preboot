@@ -69,19 +69,19 @@ import meta from './config/meta';
 import tsconfigJson = require('./tsconfig.json');
 
 const tsCompilerConfig =
-  Object.assign(tsconfigJson['compilerOptions'], { module: 'es2015'});
+  Object.assign(tsconfigJson['compilerOptions'], { module: 'es2015' });
 
 // config
 const EVENT = process.env.npm_lifecycle_event;
-const ENV   = process.env.NODE_ENV || 'development';
+const ENV = process.env.NODE_ENV || 'development';
 
 const isDev = EVENT.includes('dev');
 const isDll = EVENT.includes('dll');
 const isAot = EVENT.includes('aot');
 
-const PORT  = process.env.PORT ||
+const PORT = process.env.PORT ||
   ENV === 'development' ? 3000 : 8080;
-const HOST  = process.env.HOST || 'localhost';
+const HOST = process.env.HOST || 'localhost';
 
 const COPY_FOLDERS = [
   { from: `src/assets` },
@@ -105,6 +105,16 @@ const commonConfig = () => {
 
   config.module = {
     rules: [
+      {
+        enforce: 'pre',
+        test: /\.ts$/,
+        use: [
+          {
+            loader: 'tslint-loader',
+            options: {}
+          }
+        ]
+      },
       {
         test: /\.js$/,
         use: 'source-map-loader',
@@ -205,7 +215,7 @@ const devConfig = () => {
   config.output = {
     path: root(`dist`),
     filename: '[name].bundle.js',
-    sourceMapFilename: '[name].map',
+    sourceMapFilename: '[file].map',
     chunkFilename: '[id].chunk.js',
   };
 
