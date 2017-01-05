@@ -15,5 +15,5 @@ before_install:
   - npm i -g npm@^3
 script:
   - npm test
-  - npm run build:docker
+  - npm run build:dev
 sudo: required
