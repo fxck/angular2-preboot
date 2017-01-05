@@ -37,9 +37,10 @@ import * as CompressionPlugin from 'compression-webpack-plugin';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import * as HtmlElementsPlugin from './config/html-elements-plugin';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+import * as ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin';
+import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
-import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 
 // custom
 import {
@@ -84,7 +85,8 @@ const PORT = process.env.PORT ||
 const HOST = process.env.HOST || 'localhost';
 
 const COPY_FOLDERS = [
-  { from: `src/assets` },
+  { from: `src/assets`, ignore: ['favicon.ico'] },
+  { from: `src/assets/icon/favicon.ico` },
   { from: `src/meta` },
   { from: 'node_modules/hammerjs/hammer.min.js' },
   { from: 'node_modules/hammerjs/hammer.min.js.map' },
@@ -238,7 +240,10 @@ const devConfig = () => {
       meta,
       isDev,
       isWebpackDevServer,
-      inject: true,
+      inject: 'head',
+    }),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: 'defer'
     }),
     new CopyWebpackPlugin(COPY_FOLDERS),
 
@@ -329,7 +334,7 @@ const prodConfig = () => {
     new HtmlWebpackPlugin({
       template: `src/index.html`,
       meta,
-      inject: true,
+      inject: 'head',
     }),
     new LoaderOptionsPlugin({
       debug: false,

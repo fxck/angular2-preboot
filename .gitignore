@@ -43,6 +43,7 @@ yarn-error.log
 /public/dist/
 /src/*/__build__/
 /src/*/dist/
+!icon/
 
 # Doc #
 /doc/
