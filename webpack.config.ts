@@ -23,7 +23,7 @@ import {
 } from 'webpack';
 import * as process from 'process';
 import { AotPlugin } from '@ngtools/webpack';
-import { CheckerPlugin } from 'awesome-typescript-loader';
+// import { CheckerPlugin } from 'awesome-typescript-loader';
 import * as LoaderOptionsPlugin from 'webpack/lib/LoaderOptionsPlugin';
 import * as ContextReplacementPlugin from 'webpack/lib/ContextReplacementPlugin';
 
@@ -124,7 +124,7 @@ const commonConfig = () => {
         test: /\.ts$/,
         use: [
           {
-            loader: 'awesome-typescript-loader',
+            loader: 'ts-loader',
             options: {
               compilerConfig: tsCompilerConfig
             }
@@ -172,7 +172,7 @@ const commonConfig = () => {
     }),
     new NamedModulesPlugin(),
     new ProgressPlugin(),
-    new CheckerPlugin(),
+    // new CheckerPlugin(),
     new ContextReplacementPlugin(
       /angular(\\|\/)core(\\|\/)src(\\|\/)linker/, root(`src`)
     ),

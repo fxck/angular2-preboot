@@ -85,7 +85,7 @@ module.exports = config => {
             test: /\.ts$/,
             use: [
               {
-                loader: 'awesome-typescript-loader',
+                loader: 'ts-loader',
               },
               'angular2-template-loader',
             ],
