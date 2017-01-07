@@ -20,12 +20,12 @@ import {
   DefinePlugin,
   // NoErrorsPlugin, // quality
   ProgressPlugin,
+  LoaderOptionsPlugin,
+  ContextReplacementPlugin
 } from 'webpack';
 import * as process from 'process';
 import { AotPlugin } from '@ngtools/webpack';
 // import { CheckerPlugin } from 'awesome-typescript-loader';
-import * as LoaderOptionsPlugin from 'webpack/lib/LoaderOptionsPlugin';
-import * as ContextReplacementPlugin from 'webpack/lib/ContextReplacementPlugin';
 
 import * as CommonsChunkPlugin from 'webpack/lib/optimize/CommonsChunkPlugin';
 import * as MinChunkSizePlugin from 'webpack/lib/optimize/MinChunkSizePlugin';
@@ -41,6 +41,9 @@ import * as ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin';
 import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
+
+import * as Autoprefixer from 'autoprefixer';
+import * as CssNano from 'cssnano';
 
 // custom
 import {
@@ -145,6 +148,7 @@ const commonConfig = () => {
         use: [
           'to-string-loader',
           'css-loader',
+          'postcss-loader'
         ],
       },
       {
@@ -178,6 +182,17 @@ const commonConfig = () => {
     new ContextReplacementPlugin(
       /angular(\\|\/)core(\\|\/)src(\\|\/)linker/, root(`src`)
     ),
+    new LoaderOptionsPlugin({
+      debug: true,
+      options: {
+        postcss: function () {
+          return [
+            Autoprefixer,
+            CssNano,
+          ];
+        },
+      },
+    }),
 
     ...CUSTOM_PLUGINS_COMMON,
 
