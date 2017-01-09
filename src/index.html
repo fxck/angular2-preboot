@@ -17,6 +17,11 @@
   <!-- base url -->
   <base href="/">
 
+  <% if (!htmlWebpackPlugin.options.isDev) { %>
+  <!-- Webpack Dev Server reload -->
+  <script>window.module = 'aot';</script>
+  <% } %>
+
   <% if (htmlWebpackPlugin.options.isDev) { %>
   <!-- Webpack Dev Server reload -->
   <script src="/polyfills.dll.js" defer=></script>

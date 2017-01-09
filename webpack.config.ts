@@ -81,7 +81,7 @@ const ENV = process.env.NODE_ENV || 'development';
 
 const isDev = EVENT.includes('dev');
 const isDll = EVENT.includes('dll');
-const isAot = EVENT.includes('aot');
+const isAot = !isDev;
 
 const PORT = process.env.PORT ||
   ENV === 'development' ? 3000 : 8080;
@@ -335,6 +335,11 @@ const prodConfig = () => {
   config.plugins = [
     // new NoErrorsPlugin(), // quality
     new CommonsChunkPlugin({
+      name: 'vendor',
+      chunks: ['main'],
+      minChunks: module => /node_modules\//.test(module.resource)
+    }),
+    new CommonsChunkPlugin({
       name: ['polyfills', 'vendors', 'rxjs'].reverse(),
     }),
     new OccurrenceOrderPlugin(),
@@ -386,8 +391,8 @@ const prodConfig = () => {
 
   if (isAot) {
     config.plugins.push(new AotPlugin({
-      tsConfigPath: 'tsconfig.json',
-      mainPath: 'src/main.browser.ts',
+      tsConfigPath: './tsconfig.json',
+      mainPath: 'main.browser.ts',
     }));
   }
 

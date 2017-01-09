@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noEmit": false,
     "noEmitHelpers": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "pretty": true,
     "skipDefaultLibCheck": true,
     "sourceMap": true,
@@ -31,6 +32,9 @@
     "src/**/*.spec.ts",
     "src/**/*.e2e.ts"
   ],
+  "angularCompilerOptions": {
+    "genDir": "./aot"
+  },
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,
     "useWebpackText": true

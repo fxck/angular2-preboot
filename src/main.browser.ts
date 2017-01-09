@@ -1,12 +1,14 @@
 /*
- * Angular bootstraping
+ * Angular 2.x bootstraping
  */
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { bootloader } from './bootloader';
+import { 
+  bootstrapDomLoading,
+  bootstrapDomReady
+} from './bootstrap';
 
 /*
  * App Module
- * our top level module that holds all of our components
  */
 import { AppModule } from './app';
 
@@ -18,4 +20,9 @@ export function main() {
 }
 
 // use bootloader in case of async tag
-bootloader(main);
+if (window['module'] === 'aot') {
+  bootstrapDomReady(main);
+} else {
+  bootstrapDomLoading(main);
+}
+
