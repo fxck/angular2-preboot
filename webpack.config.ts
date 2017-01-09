@@ -72,7 +72,7 @@ import head from './config/head';
 import meta from './config/meta';
 import tsconfigJson = require('./tsconfig.json');
 
-const tsCompilerConfig =
+const compilerConfig =
   Object.assign(tsconfigJson['compilerOptions'], { module: 'es2015' });
 
 // config
@@ -131,11 +131,18 @@ const commonConfig = () => {
           {
             loader: 'ts-loader',
             options: {
-              compilerConfig: tsCompilerConfig
+              compilerConfig
             }
           },
           'angular2-template-loader',
-          'angular-router-loader',
+          {
+            loader: 'ng-router-loader',
+            options: {
+              loader: 'async-system',
+              genDir: './aot',
+              aot: isDev
+            }
+          }
         ],
         exclude: [/\.(spec|e2e)\.ts$/],
       },

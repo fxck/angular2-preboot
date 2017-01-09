@@ -2,7 +2,7 @@
  * Angular 2.x bootstraping
  */
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { 
+import {
   bootstrapDomLoading,
   bootstrapDomReady
 } from './bootstrap';
@@ -25,4 +25,3 @@ if (window['module'] === 'aot') {
 } else {
   bootstrapDomLoading(main);
 }
-
