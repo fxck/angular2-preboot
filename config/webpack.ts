@@ -1,6 +1,3 @@
-import * as Autoprefixer from 'autoprefixer';
-import * as CssNano from 'cssnano';
-
 import { EXCLUDE_SOURCEMAPS } from './custom';
 import { root } from './helpers';
 import { compilerOptions } from './helpers';
@@ -48,17 +45,15 @@ export const loader = {
     use: [
       'to-string-loader',
       'css-loader',
-      {
-        loader: 'postcss-loader',
-        options: {
-          postcss: [
-            Autoprefixer({
-              browsers: ['last 2 version']
-            }),
-            CssNano()
-          ]
-        }
-      }
+      'postcss-loader'
+        // options: {
+        //   postcss: [
+        //     Autoprefixer({
+        //       browsers: ['last 2 version']
+        //     }),
+        //     CssNano()
+        //   ]
+        // }
     ],
   }, htmlLoader: {
     test: /\.html$/,

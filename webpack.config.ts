@@ -23,6 +23,7 @@ import {
   DefinePlugin,
   DllPlugin,
   DllReferencePlugin,
+  LoaderOptionsPlugin,
   ProgressPlugin
 } from 'webpack';
 
@@ -39,6 +40,9 @@ import * as ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin';
 import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
+
+import * as Autoprefixer from 'autoprefixer';
+import * as CssNano from 'cssnano';
 
 import {
   loader
@@ -131,6 +135,17 @@ const commonConfig = () => {
       root(`src`)
     ),
     new HtmlElementsPlugin({ headTags }),
+    new LoaderOptionsPlugin({
+    debug: true,
+    options: {
+      postcss: () => {
+        return [
+          Autoprefixer,
+          CssNano,
+        ];
+      },
+    },
+  }),
 
     ...CUSTOM_PLUGINS_COMMON,
   ];
