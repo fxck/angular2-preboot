@@ -13,7 +13,7 @@
  */
 
 // imports
-// import { AotPlugin } from '@ngtools/webpack';
+import { AotPlugin } from '@ngtools/webpack';
 import { TsConfigPathsPlugin } from 'awesome-typescript-loader';
 import { CheckerPlugin } from 'awesome-typescript-loader';
 import * as process from 'process';
@@ -351,10 +351,11 @@ const prodConfig = () => {
   ];
 
   if (isAoT) {
-    // config.plugins.push(new AotPlugin({
-    //   tsConfigPath: 'tsconfig.json',
-    //   mainPath: 'src/main.browser.ts',
-    // }));
+    config.plugins.push(new AotPlugin({
+      skipCodeGeneration: true,
+      tsConfigPath: 'tsconfig.json',
+      entryModule: 'app/app.module#AppModule',
+    }));
   }
 
   return config;
