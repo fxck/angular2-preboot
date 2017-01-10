@@ -1,6 +1,6 @@
 import { EXCLUDE_SOURCEMAPS } from './custom';
 import { root } from './helpers';
-import { compilerOptions } from './helpers';
+
 
 export const loader = {
   tsLintLoader: {
@@ -25,12 +25,7 @@ export const loader = {
   aotLoader: {
     test: /\.ts$/,
     use: [
-      {
-        loader: 'awesome-typescript-loader',
-        options: {
-          compilerOptions
-        }
-      },
+      '@ngtools/webpack',
       'angular2-template-loader',
       'angular-router-loader',
     ],
@@ -46,14 +41,6 @@ export const loader = {
       'to-string-loader',
       'css-loader',
       'postcss-loader'
-        // options: {
-        //   postcss: [
-        //     Autoprefixer({
-        //       browsers: ['last 2 version']
-        //     }),
-        //     CssNano()
-        //   ]
-        // }
     ],
   }, htmlLoader: {
     test: /\.html$/,
