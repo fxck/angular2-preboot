@@ -1,5 +1,11 @@
-import { ActivatedRoute, Data } from '@angular/router';
-import { inject, TestBed } from '@angular/core/testing';
+import {
+  inject,
+  TestBed
+} from '@angular/core/testing';
+import {
+  ActivatedRoute,
+  Data
+} from '@angular/router';
 
 // Load the implementations that should be tested
 import { AboutComponent } from './about.component';

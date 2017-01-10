@@ -1,9 +1,9 @@
+import { inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { BaseRequestOptions } from '@angular/http';
 import { ConnectionBackend } from '@angular/http';
 import { Http } from '@angular/http';
-import { inject } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
-import { TestBed } from '@angular/core/testing';
 
 import { Title } from './title.service';
 

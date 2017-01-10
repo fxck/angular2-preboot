@@ -1,6 +1,4 @@
-import {
-  root,
-} from './helpers.ts';
+import { root } from './helpers.ts';
 
 export const EXCLUDE_SOURCEMAPS = [
   // these packages have problems with their sourcemaps

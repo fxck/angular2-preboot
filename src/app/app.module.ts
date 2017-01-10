@@ -1,21 +1,24 @@
-import { NgModule, ApplicationRef } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {
+  ApplicationRef,
+  NgModule
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
 /*
  * Platform and Environment providers/directives/pipes
  */
 import { AboutComponent } from './about';
-import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 // App is our top level component
 import { AppComponent } from './app.component';
+import { APP_RESOLVER_PROVIDERS } from './app.resolver';
+import { ROUTES } from './app.routes';
 import { AppState } from './app.service';
 import { HomeComponent } from './home';
-import { NoContentComponent } from './no-content';
-import { ROUTES } from './app.routes';
 import { XLargeDirective } from './home/x-large';
+import { NoContentComponent } from './no-content';
 
 // Application wide providers
 const APP_PROVIDERS = [

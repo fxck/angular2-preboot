@@ -1,6 +1,6 @@
-import { ActivatedRoute } from '@angular/router';
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 /*
  * We're loading this component asynchronously
  * We are using some magic with es6-promise-loader that will wrap the module with a Promise

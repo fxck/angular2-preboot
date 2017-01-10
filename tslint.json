@@ -25,6 +25,8 @@
     "use-life-cycle-interface": true,
     "use-output-property-decorator": true,
     "use-pipe-transform-interface": true,
+    // Custom
+    "trailing-comma": [false, {"multiline": "always", "singleline": "never"}],
     // General
     "no-console": [true,
       "time",
@@ -38,7 +40,7 @@
     "no-string-literal": false,
     "no-use-before-declare": true,
     "object-literal-sort-keys": false,
-    "ordered-imports": false,
+    "ordered-imports": [true, "case-insensitive"],
     "quotemark": [
       true,
       "single",

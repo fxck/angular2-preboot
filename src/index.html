@@ -17,7 +17,7 @@
   <!-- base url -->
   <base href="/">
 
-  <% if (htmlWebpackPlugin.options.isDev) { %>
+  <% if (__DEV__) { %>
   <!-- Webpack Dev Server reload -->
   <script src="/polyfills.dll.js" defer=></script>
   <script src="/vendors.dll.js" defer></script>

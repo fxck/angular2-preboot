@@ -1,18 +1,11 @@
 /* tslint:disable: variable-name max-line-length no-var-requires no-unused-variable */
-import * as path from 'path';
 import * as fs from 'fs';
+import * as path from 'path';
 
 export const root = path.join.bind(path, path.resolve(__dirname, '..'));
 
 export const hasProcessFlag = (flag) => process.argv.join('').indexOf(flag) > -1;
 export const isWebpackDevServer = () => process.argv[1] && !!(/webpack-dev-server/.exec(process.argv[1]));
-
-export const tryDll = (manifests) => {
-  toSpawn(() => manifests
-    .forEach(manifest => {
-      fs.accessSync(`dll/${manifest}-manifest.json`);
-    }), 'dll');
-}
 
 export const toSpawn = (cb, task) => {
   try {
@@ -22,4 +15,11 @@ export const toSpawn = (cb, task) => {
     spawn.sync('npm', ['run', task], { stdio: 'inherit' });
     return true;
   }
-}
+};
+
+export const tryDll = (manifests) => {
+  toSpawn(() => manifests
+    .forEach((manifest) => {
+      fs.accessSync(`dll/${manifest}-manifest.json`);
+    }), 'dll');
+};

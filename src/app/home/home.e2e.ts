@@ -1,4 +1,8 @@
-import { browser, element, by } from 'protractor';
+import {
+  browser,
+  by,
+  element
+} from 'protractor';
 
 describe('App', () => {
 

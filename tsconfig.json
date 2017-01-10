@@ -12,9 +12,12 @@
     "sourceMap": true,
     "strictNullChecks": false,
     "target": "es5",
+    "skipLibCheck": true,
     "lib": [
       "dom",
-      "es6"
+      "es5",
+      "es6",
+      "es7"
     ],
     "types": [
       "hammerjs",
@@ -32,8 +35,11 @@
     "src/**/*.e2e.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true,
-    "useWebpackText": true
+    "useBabel": true,
+    "useCache": false,
+    "emitRequireType": false,
+    "useWebpackText": true,
+    "forkChecker": true
   },
   "compileOnSave": false,
   "buildOnSave": false,
