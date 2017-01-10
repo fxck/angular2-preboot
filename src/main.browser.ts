@@ -2,7 +2,11 @@
  * Angular bootstraping
  */
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { bootloader } from './bootloader';
+import {
+  bootstrapDomLoading,
+  bootstrapDomReady
+} from './bootstrap';
+import { decorateModuleRef } from './env';
 
 /*
  * App Module
@@ -14,8 +18,14 @@ import { AppModule } from './app';
  * Bootstrap our Angular app with a top level NgModule
  */
 export function main() {
-  platformBrowserDynamic().bootstrapModule(AppModule);
+  platformBrowserDynamic().bootstrapModule(AppModule)
+    .then(decorateModuleRef)
+    .catch((err) => console.error(err));
 }
 
 // use bootloader in case of async tag
-bootloader(main);
+if (__PROD__) {
+  bootstrapDomReady(main);
+} else {
+  bootstrapDomLoading(main);
+};

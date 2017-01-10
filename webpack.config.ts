@@ -13,7 +13,8 @@
  */
 
 // imports
-import { AotPlugin } from '@ngtools/webpack';
+// import { AotPlugin } from '@ngtools/webpack';
+import { TsConfigPathsPlugin } from 'awesome-typescript-loader';
 import { CheckerPlugin } from 'awesome-typescript-loader';
 import * as process from 'process';
 import 'ts-helpers';
@@ -102,12 +103,10 @@ if (!isDll && isDev) {
 
 // common
 const commonConfig = () => {
-  const config: WebpackConfig = <WebpackConfig>{};
+  const config: WebpackConfig = <WebpackConfig> {};
 
   config.module = {
     rules: [
-      loader.tsLintLoader,
-      loader.jitLoader,
       loader.jsonLoader,
       loader.cssLoader,
       loader.htmlLoader,
@@ -121,6 +120,7 @@ const commonConfig = () => {
   config.plugins = [
     new ProgressPlugin(),
     new CheckerPlugin(),
+    new TsConfigPathsPlugin(),
     new DefinePlugin({
       __DEV__: isDev,
       __PROD__: !isDev
@@ -152,9 +152,16 @@ const commonConfig = () => {
 
 // dev
 const devConfig = () => {
-  const config: WebpackConfig = <WebpackConfig>{};
+  const config: WebpackConfig = <WebpackConfig> {};
 
   config.devtool = 'eval-source-map';
+
+  config.module = {
+    rules: [
+      loader.tsLintLoader,
+      loader.jitLoader
+    ]
+  };
 
   config.resolve = {
     modules: [root(`src`), `node_modules`],
@@ -213,7 +220,7 @@ const devConfig = () => {
 // dll
 const dllConfig = () => {
 
-  const config: WebpackConfig = <WebpackConfig>{};
+  const config: WebpackConfig = <WebpackConfig> {};
 
   config.entry = {
     polyfills: polyfills(),
@@ -242,9 +249,15 @@ const dllConfig = () => {
 // prod
 const prodConfig = () => {
 
-  const config: WebpackConfig = <WebpackConfig>{};
+  const config: WebpackConfig = <WebpackConfig> {};
 
   config.devtool = 'source-map';
+
+  config.module = {
+    rules: [
+      loader.aotLoader
+    ]
+  };
 
   config.entry = {
     main: `./src/main.browser`,
@@ -269,7 +282,7 @@ const prodConfig = () => {
     }),
     // This enables tree shaking of the vendor modules
     new CommonsChunkPlugin({
-      name: 'vendor',
+      name: 'vendors',
       chunks: ['main'],
       minChunks: (module) => /node_modules\//.test(module.resource)
     }),
@@ -302,17 +315,18 @@ const prodConfig = () => {
         keep_fnames: true,
       },
       compress: {
-        screw_ie8: true,
-        warnings: false,
-        conditionals: true,
-        unused: true,
         comparisons: true,
-        sequences: true,
+        conditionals: true,
         dead_code: true,
+        drop_console: true,
         evaluate: true,
         if_return: true,
         join_vars: true,
-        negate_iife: false // we need this for lazy v8
+        negate_iife: false, // we need this for lazy v8
+        screw_ie8: true,
+        sequences: true,
+        unused: true,
+        warnings: false
       },
       comments: false,
     }),
@@ -322,10 +336,10 @@ const prodConfig = () => {
   ];
 
   if (isAoT) {
-    config.plugins.push(new AotPlugin({
-      tsConfigPath: 'tsconfig.json',
-      mainPath: 'src/main.browser.ts',
-    }));
+    // config.plugins.push(new AotPlugin({
+    //   tsConfigPath: 'tsconfig.json',
+    //   mainPath: 'src/main.browser.ts',
+    // }));
   }
 
   return config;
@@ -334,7 +348,6 @@ const prodConfig = () => {
 
 // default
 const defaultConfig = () => {
-
   const config: WebpackConfig = {} as WebpackConfig;
 
   config.resolve = {
@@ -342,14 +355,13 @@ const defaultConfig = () => {
   };
 
   return config;
-
 };
 
 // webpack
 switch (ENV) {
   case 'prod':
   case 'production':
-    module.exports = webpackMerge({}, defaultConfig(), commonConfig(), prodConfig());
+    module.exports = webpackMerge({}, defaultConfig(), prodConfig(), commonConfig());
     break;
   case 'dev':
   case 'development':

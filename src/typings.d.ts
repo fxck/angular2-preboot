@@ -50,6 +50,8 @@ declare module '*';
 declare var ENV: string;
 declare var HMR: boolean;
 declare var System: ISystemJS;
+declare var __PROD__: boolean;
+declare var __DEV__: boolean;
 
 interface ISystemJS {
   import: (path?: string) => Promise<any>;
