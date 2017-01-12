@@ -36,7 +36,6 @@ import * as HtmlElementsPlugin from './config/html-elements-plugin';
 import * as CompressionPlugin from 'compression-webpack-plugin';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
-import * as ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin';
 import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
@@ -206,11 +205,7 @@ const devConfig = () => {
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      meta,
-      inject: 'head',
-    }),
-    new ScriptExtHtmlWebpackPlugin({
-      defaultAttribute: 'defer'
+      meta
     }),
     new CopyWebpackPlugin(COPY_FOLDERS),
 
@@ -320,8 +315,7 @@ const prodConfig = () => {
     new CopyWebpackPlugin(COPY_FOLDERS),
     new HtmlWebpackPlugin({
       template: `src/index.html`,
-      meta,
-      inject: 'head',
+      meta
     }),
     new UglifyJsPlugin({
       beautify: false,
