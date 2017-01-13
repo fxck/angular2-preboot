@@ -1,7 +1,6 @@
 import { EXCLUDE_SOURCEMAPS } from './custom';
 import { root } from './helpers';
 
-
 export const loader = {
   tsLintLoader: {
     enforce: 'pre',
@@ -13,15 +12,27 @@ export const loader = {
     use: 'source-map-loader',
     exclude: [EXCLUDE_SOURCEMAPS]
   },
-  jitLoader: {
+  tsLoader: (aot = false) => ({
     test: /\.ts$/,
     use: [
-      'awesome-typescript-loader',
+      {
+        loader: 'awesome-typescript-loader',
+        options: {
+          configFileName: 'tsconfig.es2015.json'
+        }
+      },
       'angular2-template-loader',
-      'angular-router-loader',
+      {
+        loader: 'ng-router-loader',
+        options: {
+          loader: 'async-system',
+          genDir: 'aot',
+          aot: aot
+        }
+      }
     ],
     exclude: [/\.(spec|e2e)\.ts$/],
-  },
+  }),
   aotLoader: {
     test: /\.ts$/,
     use: [

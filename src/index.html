@@ -17,13 +17,6 @@
   <!-- base url -->
   <base href="/">
 
-  <% if (__DEV__) { %>
-  <!-- Webpack Dev Server reload -->
-  <script src="/polyfills.dll.js" defer=></script>
-  <script src="/vendors.dll.js" defer></script>
-  <script src="/rxjs.dll.js" defer></script>
-  <% } %>
-
 </head>
 
 <body>
@@ -31,6 +24,13 @@
   <my-app>
     Loading...
   </my-app>
+
+  <% if (__DEV__) { %>
+  <!-- Webpack Dev Server reload -->
+  <script src="/polyfills.dll.js"></script>
+  <script src="/vendors.dll.js"></script>
+  <script src="/rxjs.dll.js"></script>
+  <% } %>
 
 </body>
 </html>
