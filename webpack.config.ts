@@ -40,7 +40,7 @@ import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
-import * as ngcWebpack from 'ngc-webpack';
+import { NgcWebpackPlugin } from 'ngc-webpack';
 
 import * as Autoprefixer from 'autoprefixer';
 import * as CssNano from 'cssnano';
@@ -343,7 +343,7 @@ const prodConfig = () => {
   ];
 
   if (isAoT) {
-    config.plugins.push(new ngcWebpack.NgcWebpackPlugin({
+    config.plugins.unshift(new NgcWebpackPlugin({
       disabled: !isAoT,
       tsConfig: root('tsconfig.es2015.json'),
       resourceOverride: ''
