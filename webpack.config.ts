@@ -13,7 +13,7 @@
  */
 
 // imports
-import { AotPlugin } from '@ngtools/webpack';
+// import { AotPlugin } from '@ngtools/webpack';
 import { TsConfigPathsPlugin } from 'awesome-typescript-loader';
 import { CheckerPlugin } from 'awesome-typescript-loader';
 import * as process from 'process';
@@ -39,6 +39,7 @@ import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
+import * as ngcWebpack from 'ngc-webpack';
 
 import * as Autoprefixer from 'autoprefixer';
 import * as CssNano from 'cssnano';
@@ -106,7 +107,7 @@ if (!isDll && isDev) {
 
 // common
 const commonConfig = () => {
-  const config: WebpackConfig = <WebpackConfig> {};
+  const config: WebpackConfig = <WebpackConfig>{};
 
   config.module = {
     rules: [
@@ -135,16 +136,16 @@ const commonConfig = () => {
     ),
     new HtmlElementsPlugin({ headTags }),
     new LoaderOptionsPlugin({
-    debug: true,
-    options: {
-      postcss: () => {
-        return [
-          Autoprefixer,
-          CssNano,
-        ];
+      debug: true,
+      options: {
+        postcss: () => {
+          return [
+            Autoprefixer,
+            CssNano,
+          ];
+        },
       },
-    },
-  }),
+    }),
 
     ...CUSTOM_PLUGINS_COMMON,
   ];
@@ -166,14 +167,14 @@ const commonConfig = () => {
 
 // dev
 const devConfig = () => {
-  const config: WebpackConfig = <WebpackConfig> {};
+  const config: WebpackConfig = <WebpackConfig>{};
 
   config.devtool = 'eval-source-map';
 
   config.module = {
     rules: [
       loader.tsLintLoader,
-      loader.jitLoader
+      loader.tsLoader(isAoT)
     ]
   };
 
@@ -230,7 +231,7 @@ const devConfig = () => {
 // dll
 const dllConfig = () => {
 
-  const config: WebpackConfig = <WebpackConfig> {};
+  const config: WebpackConfig = <WebpackConfig>{};
 
   config.entry = {
     polyfills: polyfills(),
@@ -259,18 +260,18 @@ const dllConfig = () => {
 // prod
 const prodConfig = () => {
 
-  const config: WebpackConfig = <WebpackConfig> {};
+  const config: WebpackConfig = <WebpackConfig>{};
 
   config.devtool = 'source-map';
 
   config.module = {
     rules: [
-      loader.aotLoader
+      loader.tsLoader(isAoT)
     ]
   };
 
   config.entry = {
-    main: `./src/main.browser`,
+    main: `./src/main.browser.aot`,
     polyfills: polyfills(),
     rxjs: rxjs(),
     vendors: vendors(),
@@ -286,18 +287,9 @@ const prodConfig = () => {
   config.plugins = [
     new V8LazyParseWebpackPlugin(),
     // new NoErrorsPlugin(), // quality
-    new CommonsChunkPlugin({
-      name: 'polyfills',
-      chunks: ['polyfills']
-    }),
     // This enables tree shaking of the vendor modules
     new CommonsChunkPlugin({
       name: 'vendors',
-      chunks: ['main'],
-      minChunks: (module) => /node_modules\//.test(module.resource)
-    }),
-    new CommonsChunkPlugin({
-      name: 'rxjs',
       chunks: ['main'],
       minChunks: (module) => /node_modules\//.test(module.resource)
     }),
@@ -345,10 +337,10 @@ const prodConfig = () => {
   ];
 
   if (isAoT) {
-    config.plugins.push(new AotPlugin({
-      skipCodeGeneration: true,
-      tsConfigPath: 'tsconfig.json',
-      entryModule: 'app/app.module#AppModule',
+    config.plugins.push(new ngcWebpack.NgcWebpackPlugin({
+      disabled: !isAoT,
+      tsConfig: root('tsconfig.es2015.json'),
+      resourceOverride: ''
     }));
   }
 

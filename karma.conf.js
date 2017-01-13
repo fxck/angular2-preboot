@@ -84,7 +84,18 @@ module.exports = config => {
           }, {
             test: /\.ts$/,
             use: [
-              'awesome-typescript-loader',
+              {
+                loader: 'awesome-typescript-loader',
+                options: {
+                  noUnusedLocals: false,
+                  noUnusedParameters: false,
+                  sourceMap: false,
+                  inlineSourceMap: true,
+                  compilerOptions: {
+                    removeComments: true
+                  }
+                }
+              },
               'angular2-template-loader',
             ],
             exclude: [/\.e2e\.ts$/]

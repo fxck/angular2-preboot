@@ -37,7 +37,6 @@ export function vendors() {
   return [
     '@angular/platform-browser',
     '@angular/platform-browser-dynamic',
-    '@angular/compiler',
     '@angular/router',
     '@angular/forms',
     '@angular/common',
