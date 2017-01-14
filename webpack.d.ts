@@ -7,6 +7,12 @@ interface WebpackConfig {
   output: any;
   module?: any;
   plugins?: Array<any>;
+  performance?: boolean | {
+    hints?: string,
+    assetFilter?: string,
+    maxEntrypointSize?: string,
+    maxAssetSize?: string
+  };
   resolve?: {
     extensions?: Array<string>;
     modules?: Array<string>;

@@ -272,11 +272,14 @@ const prodConfig = () => {
     ]
   };
 
+  config.performance = {
+    hints: 'warning'
+  }
+
   config.entry = {
     main: `./src/main.browser.aot`,
     polyfills: polyfills(isDev),
     rxjs: rxjs(),
-    vendors: vendors(),
   };
 
   config.output = {
@@ -288,17 +291,8 @@ const prodConfig = () => {
 
   config.plugins = [
     new V8LazyParseWebpackPlugin(),
-    // new NoErrorsPlugin(), // quality
+    // new NoEmitOnErrorsPlugin(), // quality
     // This enables tree shaking of the vendor modules
-    new CommonsChunkPlugin({
-      name: 'polyfills',
-      chunks: ['polyfills'],
-    }),
-    new CommonsChunkPlugin({
-      name: 'rxjs',
-      chunks: ['main'],
-      minChunks: (module) => /node_modules\//.test(module.resource)
-    }),
     new CommonsChunkPlugin({
       name: 'vendors',
       chunks: ['main'],
