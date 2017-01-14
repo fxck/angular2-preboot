@@ -24,7 +24,8 @@ import {
   DllPlugin,
   DllReferencePlugin,
   LoaderOptionsPlugin,
-  ProgressPlugin
+  ProgressPlugin,
+  NormalModuleReplacementPlugin
 } from 'webpack';
 
 import * as NamedModulesPlugin from 'webpack/lib/NamedModulesPlugin';
@@ -184,7 +185,7 @@ const devConfig = () => {
   };
 
   config.entry = {
-    main: [].concat(polyfills(), './src/main.browser', rxjs()),
+    main: [].concat(polyfills(isDev), './src/main.browser', rxjs()),
   };
 
   config.output = {
@@ -236,7 +237,7 @@ const dllConfig = () => {
   const config: WebpackConfig = <WebpackConfig>{};
 
   config.entry = {
-    polyfills: polyfills(),
+    polyfills: polyfills(isDev),
     rxjs: rxjs(),
     vendors: vendors(),
   };
@@ -274,7 +275,7 @@ const prodConfig = () => {
 
   config.entry = {
     main: `./src/main.browser.aot`,
-    polyfills: polyfills(),
+    polyfills: polyfills(isDev),
     rxjs: rxjs(),
     vendors: vendors(),
   };
@@ -312,7 +313,7 @@ const prodConfig = () => {
       asset: '[path].gz[query]',
       algorithm: 'gzip',
       test: /\.js$|\.html$/,
-      threshold: 10240,
+      threshold: 2 * 1024,
       minRatio: 0.8,
     }),
     new CopyWebpackPlugin(COPY_FOLDERS),
