@@ -2,9 +2,7 @@ const helpers = require('./config/helpers');
 const path = require('path');
 
 const DefinePlugin = require('webpack/lib/DefinePlugin');
-const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
-const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 
 const ENV = process.env.NODE_ENV || 'testing';
 
