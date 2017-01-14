@@ -26,13 +26,13 @@ export function polyfills(isDev?: boolean) {
 
     // zone.js
     'zone.js/dist/zone',
+
+     // typescript helpers
+    'ts-helpers',
   ];
 
   const dev = [
     'zone.js/dist/long-stack-trace-zone',
-
-    // typescript helpers
-    'ts-helpers',
   ];
 
   return !isDev ? common : common.concat(dev);
