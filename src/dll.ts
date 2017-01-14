@@ -33,7 +33,7 @@ export function polyfills(isDev?: boolean) {
 
     // typescript helpers
     'ts-helpers',
-  ]
+  ];
 
   return !isDev ? common : common.concat(dev);
 }

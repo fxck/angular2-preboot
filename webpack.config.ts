@@ -24,8 +24,7 @@ import {
   DllPlugin,
   DllReferencePlugin,
   LoaderOptionsPlugin,
-  ProgressPlugin,
-  NormalModuleReplacementPlugin
+  ProgressPlugin
 } from 'webpack';
 
 import * as NamedModulesPlugin from 'webpack/lib/NamedModulesPlugin';
