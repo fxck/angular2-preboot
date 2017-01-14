@@ -33,15 +33,6 @@ export const loader = {
     ],
     exclude: [/\.(spec|e2e)\.ts$/],
   }),
-  aotLoader: {
-    test: /\.ts$/,
-    use: [
-      '@ngtools/webpack',
-      'angular2-template-loader',
-      'angular-router-loader',
-    ],
-    exclude: [/\.(spec|e2e)\.ts$/],
-  },
   jsonLoader: {
     test: /\.json$/,
     use: 'json-loader',
