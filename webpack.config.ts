@@ -211,6 +211,9 @@ const devConfig = () => {
       inject: 'head'
     }),
     new CopyWebpackPlugin(COPY_FOLDERS),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: 'defer'
+    }),
 
     ...CUSTOM_PLUGINS_DEV,
   ];

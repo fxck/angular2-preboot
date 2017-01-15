@@ -94,7 +94,7 @@ module.exports = config => {
                   }
                 }
               },
-              'angular2-template-loader',
+              'angular2-template-loader'
             ],
             exclude: [/\.e2e\.ts$/]
           }, {
@@ -137,7 +137,7 @@ module.exports = config => {
           // The (\\|\/) piece accounts for path separators in *nix and Windows
           /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
           helpers.root('src') // location of your src
-        ),
+        )
       ],
 
       /**
