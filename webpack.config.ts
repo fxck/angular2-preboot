@@ -65,7 +65,7 @@ import {
 import {
   polyfills,
   rxjs,
-  vendors,
+  vendor,
 } from './src/dll';
 
 // custom
@@ -106,7 +106,7 @@ const COPY_FOLDERS = [
 
 // is dll
 if (!isDll && isDev) {
-  tryDll(['polyfills', 'vendors', 'rxjs']);
+  tryDll(['polyfills', 'vendor', 'rxjs']);
 }
 
 // common
@@ -208,7 +208,7 @@ const devConfig = () => {
     }),
     new DllReferencePlugin({
       context: '.',
-      manifest: require(`./dll/vendors-manifest.json`),
+      manifest: require(`./dll/vendor-manifest.json`),
     }),
     new HtmlWebpackPlugin({
       inject: 'head',
@@ -246,7 +246,7 @@ const dllConfig = () => {
   config.entry = {
     polyfills: polyfills(isDev),
     rxjs: rxjs(),
-    vendors: vendors(),
+    vendor: vendor(),
   };
 
   config.output = {
@@ -302,12 +302,12 @@ const prodConfig = () => {
     // new NoEmitOnErrorsPlugin(), // quality
     // This enables tree shaking of the vendor modules
     new CommonsChunkPlugin({
-      name: 'vendors',
+      name: 'vendor',
       chunks: ['main'],
       minChunks: (module) => /node_modules\//.test(module.resource)
     }),
     new CommonsChunkPlugin({
-      name: [ 'polyfills', 'vendors', 'rxjs' ].reverse(),
+      name: [ 'polyfills', 'vendor', 'rxjs' ].reverse(),
     }),
     new OccurrenceOrderPlugin(),
     new CompressionPlugin({

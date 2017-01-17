@@ -39,7 +39,7 @@ export function polyfills(isDev?: boolean) {
 }
 
 // Angular 2 and other Vendor imports
-export function vendors() {
+export function vendor() {
   return [
     '@angular/platform-browser',
     '@angular/platform-browser-dynamic',
