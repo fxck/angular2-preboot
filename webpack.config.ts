@@ -33,13 +33,13 @@ import * as UglifyJsPlugin from 'webpack/lib/optimize/UglifyJsPlugin';
 
 import * as CompressionPlugin from 'compression-webpack-plugin';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
+import { HtmlHeadElementsPlugin } from 'html-head-webpack-plugin';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import { NgcWebpackPlugin } from 'ngc-webpack';
 import * as ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin';
 import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
-import * as HtmlHeadElementsPlugin from './config/html-elements-plugin';
 
 import * as Autoprefixer from 'autoprefixer';
 import * as CssNano from 'cssnano';
