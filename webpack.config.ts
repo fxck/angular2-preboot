@@ -44,10 +44,6 @@ import * as webpackMerge from 'webpack-merge';
 import * as Autoprefixer from 'autoprefixer';
 import * as CssNano from 'cssnano';
 
-import {
-  loader
-} from './config/webpack';
-
 // helpers
 import {
   isWebpackDevServer,
@@ -64,17 +60,15 @@ import {
 
 // custom
 import {
-  CUSTOM_COPY_FOLDERS,
-  CUSTOM_DEV_SERVER_OPTIONS,
-  CUSTOM_PLUGINS_COMMON,
-  CUSTOM_PLUGINS_DEV,
-  CUSTOM_PLUGINS_PROD,
-  CUSTOM_RULES_COMMON
-} from './config/custom';
+  COPY_FOLDERS as USER_COPY_FOLDERS,
+  DEV_SERVER_OPTIONS as USER_DEV_SERVER_OPTIONS,
+  PLUGINS as USER_PLUGINS,
+  RULES as USER_RULES,
+  EXCLUDE_SOURCEMAPS as USER_EXCLUDE_SOURCEMAPS
+} from './config/webpack';
 
 // html
 import headTags from './config/head';
-import meta from './config/meta';
 
 // config
 const EVENT = process.env.npm_lifecycle_event;
@@ -93,17 +87,70 @@ const COPY_FOLDERS = [
   { from: `src/assets`, ignore: [`favicon.ico`] },
   { from: `src/assets/icon/favicon.ico` },
   { from: `src/meta` },
-  { from: `node_modules/hammerjs/hammer.min.js` },
-  { from: `node_modules/hammerjs/hammer.min.js.map` },
 
-  ...CUSTOM_COPY_FOLDERS,
+  ...USER_COPY_FOLDERS,
 
 ];
 
 // is dll
 if (!isDll && isDev) {
-  tryDll(['polyfills', 'vendors', 'rxjs']);
+  tryDll([ 'polyfills', 'vendors', 'rxjs' ]);
 }
+
+let loaderRules = {
+  tsLintLoader: {
+    enforce: 'pre',
+    test: /\.ts$/,
+    use: [ 'tslint-loader' ]
+  },
+  sourceMapLoader: {
+    test: /\.js$/,
+    use: 'source-map-loader',
+    exclude: [ USER_EXCLUDE_SOURCEMAPS ]
+  },
+  tsLoader: (aot = false) => ({
+    test: /\.ts$/,
+    use: [
+      {
+        loader: 'awesome-typescript-loader',
+        options: {
+          configFileName: 'tsconfig.es2015.json'
+        }
+      },
+      'angular2-template-loader',
+      {
+        loader: 'ng-router-loader',
+        options: {
+          loader: 'async-system',
+          genDir: 'aot',
+          aot: aot
+        }
+      }
+    ],
+    exclude: [ /\.(spec|e2e)\.ts$/ ],
+  }),
+  jsonLoader: {
+    test: /\.json$/,
+    use: 'json-loader',
+  },
+  cssLoader: {
+    test: /\.css$/,
+    use: [
+      'to-string-loader',
+      'css-loader',
+      'postcss-loader'
+    ],
+  },
+  htmlLoader: {
+    test: /\.html$/,
+    use: 'raw-loader',
+    exclude: [ root('src/index.html') ],
+  },
+  fileLoader: {
+    test: /\.(jpg|png|gif)$/,
+    use: 'file-loader',
+  }
+};
 
 // common
 const commonConfig = () => {
@@ -111,13 +158,12 @@ const commonConfig = () => {
 
   config.module = {
     rules: [
-      loader.jsonLoader,
-      loader.cssLoader,
-      loader.htmlLoader,
-      loader.fileLoader,
+      loaderRules.jsonLoader,
+      loaderRules.cssLoader,
+      loaderRules.htmlLoader,
+      loaderRules.fileLoader,
 
-      ...CUSTOM_RULES_COMMON,
-
+      ...USER_RULES.common,
     ],
   };
 
@@ -134,7 +180,17 @@ const commonConfig = () => {
       /angular(\\|\/)core(\\|\/)src(\\|\/)linker/,
       root(`src`)
     ),
-    new HtmlHeadElementsPlugin({ headTags }),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+      meta: {
+        title: headTags.title
+      },
+      inject: 'head'
+    }),
+    new HtmlHeadElementsPlugin({
+      link: headTags.link,
+      meta: headTags.meta
+    }),
     new LoaderOptionsPlugin({
       debug: true,
       options: {
@@ -147,7 +203,7 @@ const commonConfig = () => {
       },
     }),
 
-    ...CUSTOM_PLUGINS_COMMON,
+    ...USER_PLUGINS.common,
   ];
 
   config.node = {
@@ -173,13 +229,13 @@ const devConfig = () => {
 
   config.module = {
     rules: [
-      loader.tsLintLoader,
-      loader.tsLoader(isAoT)
+      loaderRules.tsLintLoader,
+      loaderRules.tsLoader(isAoT)
     ]
   };
 
   config.resolve = {
-    modules: [root(`src`), `node_modules`],
+    modules: [ root(`src`), `node_modules` ],
   };
 
   config.entry = {
@@ -193,7 +249,7 @@ const devConfig = () => {
     chunkFilename: '[id].chunk.js',
   };
 
-  COPY_FOLDERS.push({ from: `dll`, ignore: ['*.json'] });
+  COPY_FOLDERS.push({ from: `dll`, ignore: [ '*.json' ] });
 
   config.plugins = [
     new DllReferencePlugin({
@@ -204,17 +260,12 @@ const devConfig = () => {
       context: '.',
       manifest: require(`./dll/vendors-manifest.json`),
     }),
-    new HtmlWebpackPlugin({
-      template: 'src/index.html',
-      meta,
-      inject: 'head'
-    }),
     new CopyWebpackPlugin(COPY_FOLDERS),
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'defer'
     }),
 
-    ...CUSTOM_PLUGINS_DEV,
+    ...USER_PLUGINS.dev,
   ];
 
   if (isWebpackDevServer) {
@@ -225,7 +276,7 @@ const devConfig = () => {
         host: HOST,
         port: PORT,
       },
-      CUSTOM_DEV_SERVER_OPTIONS,
+      USER_DEV_SERVER_OPTIONS,
     );
   }
 
@@ -270,7 +321,7 @@ const prodConfig = () => {
 
   config.module = {
     rules: [
-      loader.tsLoader(isAoT)
+      loaderRules.tsLoader(isAoT)
     ]
   };
 
@@ -297,11 +348,11 @@ const prodConfig = () => {
     // This enables tree shaking of the vendor modules
     new CommonsChunkPlugin({
       name: 'vendors',
-      chunks: ['main'],
+      chunks: [ 'main' ],
       minChunks: (module) => /node_modules\//.test(module.resource)
     }),
     new CommonsChunkPlugin({
-      name: ['polyfills', 'vendors', 'rxjs'].reverse(),
+      name: [ 'polyfills', 'vendors', 'rxjs' ].reverse(),
     }),
     new OccurrenceOrderPlugin(),
     new CompressionPlugin({
@@ -312,11 +363,6 @@ const prodConfig = () => {
       minRatio: 0.8,
     }),
     new CopyWebpackPlugin(COPY_FOLDERS),
-    new HtmlWebpackPlugin({
-      template: `src/index.html`,
-      meta,
-      inject: 'head'
-    }),
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'defer'
     }),
@@ -344,7 +390,7 @@ const prodConfig = () => {
     }),
     new WebpackMd5Hash(),
 
-    ...CUSTOM_PLUGINS_PROD,
+    ...USER_PLUGINS.prod,
   ];
 
   if (isAoT) {
@@ -364,7 +410,7 @@ const defaultConfig = () => {
   const config: WebpackConfig = {} as WebpackConfig;
 
   config.resolve = {
-    extensions: ['.ts', '.js', '.json'],
+    extensions: [ '.ts', '.js', '.json' ],
   };
 
   return config;
