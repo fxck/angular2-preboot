@@ -1,5 +1,3 @@
-/* tslint:disable: variable-name max-line-length no-var-requires no-unused-variable */
-
 /**
  *
  * - imports

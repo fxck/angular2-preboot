@@ -1,4 +1,3 @@
-/* tslint:disable: variable-name max-line-length no-var-requires no-unused-variable */
 import * as fs from 'fs';
 import * as path from 'path';
 import tsConfig = require('../tsconfig.json');
