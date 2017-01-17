@@ -27,7 +27,7 @@ export const loader = {
         options: {
           loader: 'async-system',
           genDir: 'aot',
-          aot: aot
+          aot
         }
       }
     ],

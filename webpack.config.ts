@@ -12,11 +12,11 @@
  * - webpack
  */
 
-// imports
-import { TsConfigPathsPlugin } from 'awesome-typescript-loader';
-import { CheckerPlugin } from 'awesome-typescript-loader';
+// node
 import * as process from 'process';
 import 'ts-helpers';
+
+// webpack
 import {
   ContextReplacementPlugin,
   DefinePlugin,
@@ -26,11 +26,17 @@ import {
   ProgressPlugin
 } from 'webpack';
 
+// optimization
 import * as NamedModulesPlugin from 'webpack/lib/NamedModulesPlugin';
 import * as CommonsChunkPlugin from 'webpack/lib/optimize/CommonsChunkPlugin';
 import * as OccurrenceOrderPlugin from 'webpack/lib/optimize/OccurrenceOrderPlugin';
 import * as UglifyJsPlugin from 'webpack/lib/optimize/UglifyJsPlugin';
 
+// loader
+import { TsConfigPathsPlugin } from 'awesome-typescript-loader';
+import { CheckerPlugin } from 'awesome-typescript-loader';
+
+// plugins
 import * as CompressionPlugin from 'compression-webpack-plugin';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import { HtmlHeadElementsPlugin } from 'html-head-webpack-plugin';
@@ -41,9 +47,11 @@ import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
 
+// tools
 import * as Autoprefixer from 'autoprefixer';
 import * as CssNano from 'cssnano';
 
+// custom
 import {
   loader
 } from './config/webpack';
@@ -73,8 +81,7 @@ import {
 } from './config/custom';
 
 // html
-import headTags from './config/head';
-import meta from './config/meta';
+import { headTags } from './config/head';
 
 // config
 const EVENT = process.env.npm_lifecycle_event;
@@ -83,7 +90,6 @@ const ENV = process.env.NODE_ENV || 'development';
 const isDev = EVENT.includes('dev');
 const isDll = EVENT.includes('dll');
 const isAoT = !isDev;
-// const isJiT = !isAoT;
 
 const PORT = process.env.PORT ||
   ENV === 'development' ? 3000 : 8080;
@@ -134,7 +140,9 @@ const commonConfig = () => {
       /angular(\\|\/)core(\\|\/)src(\\|\/)linker/,
       root(`src`)
     ),
-    new HtmlHeadElementsPlugin({ headTags }),
+    new HtmlHeadElementsPlugin({
+      headTags
+    }),
     new LoaderOptionsPlugin({
       debug: true,
       options: {
@@ -183,7 +191,7 @@ const devConfig = () => {
   };
 
   config.entry = {
-    main: [].concat(polyfills(isDev), './src/main.browser', rxjs()),
+    main: [].concat(polyfills(isDev), './src/browser', rxjs()),
   };
 
   config.output = {
@@ -205,9 +213,9 @@ const devConfig = () => {
       manifest: require(`./dll/vendors-manifest.json`),
     }),
     new HtmlWebpackPlugin({
+      inject: 'head',
       template: 'src/index.html',
-      meta,
-      inject: 'head'
+      title: headTags.title
     }),
     new CopyWebpackPlugin(COPY_FOLDERS),
     new ScriptExtHtmlWebpackPlugin({
@@ -279,7 +287,7 @@ const prodConfig = () => {
   };
 
   config.entry = {
-    main: `./src/main.browser.aot`,
+    main: `./src/browser.aot`,
     polyfills: polyfills(isDev),
     rxjs: rxjs(),
   };
@@ -301,7 +309,7 @@ const prodConfig = () => {
       minChunks: (module) => /node_modules\//.test(module.resource)
     }),
     new CommonsChunkPlugin({
-      name: ['polyfills', 'vendors', 'rxjs'].reverse(),
+      name: [ 'polyfills', 'vendors', 'rxjs' ].reverse(),
     }),
     new OccurrenceOrderPlugin(),
     new CompressionPlugin({
@@ -313,9 +321,9 @@ const prodConfig = () => {
     }),
     new CopyWebpackPlugin(COPY_FOLDERS),
     new HtmlWebpackPlugin({
+      inject: 'head',
       template: `src/index.html`,
-      meta,
-      inject: 'head'
+      title: headTags.title
     }),
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'defer'
@@ -356,15 +364,14 @@ const prodConfig = () => {
   }
 
   return config;
-
 };
 
 // default
 const defaultConfig = () => {
-  const config: WebpackConfig = {} as WebpackConfig;
+  const config: WebpackConfig = <WebpackConfig> {};
 
   config.resolve = {
-    extensions: ['.ts', '.js', '.json'],
+    extensions: [ '.ts', '.js', '.json' ],
   };
 
   return config;
