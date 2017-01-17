@@ -97,8 +97,6 @@ const COPY_FOLDERS = [
   { from: `src/assets`, ignore: [`favicon.ico`] },
   { from: `src/assets/icon/favicon.ico` },
   { from: `src/meta` },
-  { from: `node_modules/hammerjs/hammer.min.js` },
-  { from: `node_modules/hammerjs/hammer.min.js.map` },
 
   ...CUSTOM_COPY_FOLDERS,
 

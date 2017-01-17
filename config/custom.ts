@@ -7,7 +7,9 @@ export const EXCLUDE_SOURCEMAPS = [
 ];
 
 export const CUSTOM_COPY_FOLDERS = [
-
+  // enable gestures
+  // { from: `node_modules/hammerjs/hammer.min.js` },
+  // { from: `node_modules/hammerjs/hammer.min.js.map` }
 ];
 
 export const CUSTOM_PLUGINS_COMMON = [
