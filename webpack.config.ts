@@ -13,7 +13,6 @@
  */
 
 // imports
-// import { AotPlugin } from '@ngtools/webpack';
 import { TsConfigPathsPlugin } from 'awesome-typescript-loader';
 import { CheckerPlugin } from 'awesome-typescript-loader';
 import * as process from 'process';
@@ -31,16 +30,16 @@ import * as NamedModulesPlugin from 'webpack/lib/NamedModulesPlugin';
 import * as CommonsChunkPlugin from 'webpack/lib/optimize/CommonsChunkPlugin';
 import * as OccurrenceOrderPlugin from 'webpack/lib/optimize/OccurrenceOrderPlugin';
 import * as UglifyJsPlugin from 'webpack/lib/optimize/UglifyJsPlugin';
-import * as HtmlElementsPlugin from './config/html-elements-plugin';
 
 import * as CompressionPlugin from 'compression-webpack-plugin';
-import * as ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+import { NgcWebpackPlugin } from 'ngc-webpack';
+import * as ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin';
 import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
-import { NgcWebpackPlugin } from 'ngc-webpack';
+import * as HtmlHeadElementsPlugin from './config/html-elements-plugin';
 
 import * as Autoprefixer from 'autoprefixer';
 import * as CssNano from 'cssnano';
@@ -108,7 +107,7 @@ if (!isDll && isDev) {
 
 // common
 const commonConfig = () => {
-  const config: WebpackConfig = <WebpackConfig>{};
+  const config: WebpackConfig = <WebpackConfig> {};
 
   config.module = {
     rules: [
@@ -135,7 +134,7 @@ const commonConfig = () => {
       /angular(\\|\/)core(\\|\/)src(\\|\/)linker/,
       root(`src`)
     ),
-    new HtmlElementsPlugin({ headTags }),
+    new HtmlHeadElementsPlugin({ headTags }),
     new LoaderOptionsPlugin({
       debug: true,
       options: {
@@ -168,7 +167,7 @@ const commonConfig = () => {
 
 // dev
 const devConfig = () => {
-  const config: WebpackConfig = <WebpackConfig>{};
+  const config: WebpackConfig = <WebpackConfig> {};
 
   config.devtool = 'eval-source-map';
 
@@ -236,7 +235,7 @@ const devConfig = () => {
 // dll
 const dllConfig = () => {
 
-  const config: WebpackConfig = <WebpackConfig>{};
+  const config: WebpackConfig = <WebpackConfig> {};
 
   config.entry = {
     polyfills: polyfills(isDev),
@@ -265,7 +264,7 @@ const dllConfig = () => {
 // prod
 const prodConfig = () => {
 
-  const config: WebpackConfig = <WebpackConfig>{};
+  const config: WebpackConfig = <WebpackConfig> {};
 
   config.devtool = 'source-map';
 
@@ -277,7 +276,7 @@ const prodConfig = () => {
 
   config.performance = {
     hints: 'warning'
-  }
+  };
 
   config.entry = {
     main: `./src/main.browser.aot`,
