@@ -1,7 +1,6 @@
 export declare const EXCLUDE_SOURCEMAPS: any[];
 export declare const COPY_FOLDERS: any[];
 export declare const PLUGINS: {
-  default: any;
   common: any[];
   dev: any[];
   prod: any[];
