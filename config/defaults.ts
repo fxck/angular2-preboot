@@ -1,7 +1,7 @@
 import { EXCLUDE_SOURCEMAPS } from './custom';
 import { root } from './helpers';
 
-export const loader = {
+export const loader: DefaultsLoaders = {
   tsLintLoader: {
     enforce: 'pre',
     test: /\.ts$/,

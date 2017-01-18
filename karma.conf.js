@@ -62,7 +62,6 @@ module.exports = config => {
       html: './coverage/html'
     },
 
-    // Webpack Config at ./webpack.test.js
     webpack: {
       devtool: 'inline-source-map',
       resolve: {

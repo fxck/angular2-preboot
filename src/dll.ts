@@ -48,6 +48,9 @@ export function vendor() {
     '@angular/common',
     '@angular/core',
     '@angular/http',
+
+    // import in bootstrap file
+    'hammerjs'
   ];
 }
 

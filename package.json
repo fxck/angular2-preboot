@@ -107,6 +107,7 @@
     "html-webpack-plugin": "^2.25.0",
     "imports-loader": "^0.7.0",
     "istanbul-instrumenter-loader": "^1.1.0",
+    "jasmine-core": "^2.5.2",
     "json-loader": "^0.5.4",
     "karma": "^1.2.0",
     "karma-chrome-launcher": "^2.0.0",

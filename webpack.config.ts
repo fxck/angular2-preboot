@@ -45,14 +45,8 @@ import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
 
-// tools
-import * as Autoprefixer from 'autoprefixer';
-import * as CssNano from 'cssnano';
-
-// custom
-import {
-  loader
-} from './config/webpack';
+// defaults
+import { loader } from './config/defaults';
 
 // helpers
 import {
@@ -70,16 +64,16 @@ import {
 
 // custom
 import {
+  CUSTOM_COMMON,
   CUSTOM_COPY_FOLDERS,
-  CUSTOM_DEV_SERVER_OPTIONS,
-  CUSTOM_PLUGINS_COMMON,
-  CUSTOM_PLUGINS_DEV,
-  CUSTOM_PLUGINS_PROD,
-  CUSTOM_RULES_COMMON
+  CUSTOM_DEV,
+  CUSTOM_PROD,
+  DEV_SERVER_OPTIONS
 } from './config/custom';
 
 // html
 import { headTags } from './config/head';
+import { CUSTOM_COMMON, CUSTOM_PROD } from './config/custom';
 
 // config
 const EVENT = process.env.npm_lifecycle_event;
@@ -109,7 +103,7 @@ if (!isDll && isDev) {
 
 // common
 const commonConfig = () => {
-  const config: WebpackConfig = <WebpackConfig> {};
+  const config: WebpackConfig = <WebpackConfig>{};
 
   config.module = {
     rules: [
@@ -118,7 +112,7 @@ const commonConfig = () => {
       loader.htmlLoader,
       loader.fileLoader,
 
-      ...CUSTOM_RULES_COMMON,
+      ...CUSTOM_COMMON.RULES,
 
     ],
   };
@@ -139,19 +133,9 @@ const commonConfig = () => {
     new HtmlHeadElementsPlugin({
       headTags
     }),
-    new LoaderOptionsPlugin({
-      debug: true,
-      options: {
-        postcss: () => {
-          return [
-            Autoprefixer,
-            CssNano,
-          ];
-        },
-      },
-    }),
 
-    ...CUSTOM_PLUGINS_COMMON,
+    ...CUSTOM_COMMON.PLUGINS,
+
   ];
 
   config.node = {
@@ -178,7 +162,10 @@ const devConfig = () => {
   config.module = {
     rules: [
       loader.tsLintLoader,
-      loader.tsLoader(isAoT)
+      loader.tsLoader(isAoT),
+
+      ...CUSTOM_DEV.RULES
+
     ]
   };
 
@@ -218,19 +205,19 @@ const devConfig = () => {
       defaultAttribute: 'defer'
     }),
 
-    ...CUSTOM_PLUGINS_DEV,
+    ...CUSTOM_DEV.PLUGINS,
+
   ];
 
   if (isWebpackDevServer) {
-    config.devServer = Object.assign(
-      {
-        contentBase: root(`src`),
-        historyApiFallback: true,
-        host: HOST,
-        port: PORT,
-      },
-      CUSTOM_DEV_SERVER_OPTIONS,
-    );
+    config.devServer = {
+      contentBase: root(`src`),
+      historyApiFallback: true,
+      host: HOST,
+      port: PORT,
+
+      ...DEV_SERVER_OPTIONS
+    };
   }
 
   return config;
@@ -274,7 +261,10 @@ const prodConfig = () => {
 
   config.module = {
     rules: [
-      loader.tsLoader(isAoT)
+      loader.tsLoader(isAoT),
+
+      ...CUSTOM_PROD.RULES
+
     ]
   };
 
@@ -305,7 +295,7 @@ const prodConfig = () => {
       minChunks: (module) => /node_modules\//.test(module.resource)
     }),
     new CommonsChunkPlugin({
-      name: [ 'polyfills', 'vendor', 'rxjs' ].reverse(),
+      name: ['polyfills', 'vendor', 'rxjs'].reverse(),
     }),
     new OccurrenceOrderPlugin(),
     new CompressionPlugin({
@@ -348,15 +338,16 @@ const prodConfig = () => {
     }),
     new WebpackMd5Hash(),
 
-    ...CUSTOM_PLUGINS_PROD,
+    ...CUSTOM_PROD.PLUGINS,
   ];
 
   if (isAoT) {
-    config.plugins.unshift(new NgcWebpackPlugin({
-      disabled: !isAoT,
-      tsConfig: root('tsconfig.es2015.json'),
-      resourceOverride: ''
-    }));
+    config.plugins.unshift(
+      new NgcWebpackPlugin({
+        disabled: !isAoT,
+        tsConfig: root('tsconfig.es2015.json'),
+        resourceOverride: ''
+      }));
   }
 
   return config;
@@ -367,7 +358,7 @@ const defaultConfig = () => {
   const config: WebpackConfig = <WebpackConfig> {};
 
   config.resolve = {
-    extensions: [ '.ts', '.js', '.json' ],
+    extensions: ['.ts', '.js', '.json'],
   };
 
   return config;

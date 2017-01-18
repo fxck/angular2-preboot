@@ -43,3 +43,49 @@ interface WebpackConfig {
     __filename?: boolean;
   };
 }
+
+
+interface DefaultsLoaders {
+  tsLintLoader?: {
+    enforce?: any;
+    test?: any;
+    use?: any;
+    exclude?: any;
+  };
+  sourceMapLoader?: {
+    enforce?: any;
+    test?: any;
+    use?: any;
+    exclude?: any;
+  },
+  tsLoader?: (aot: boolean) => {
+    enforce?: any;
+    test: any;
+    use: any;
+    exclude?: any;
+  };
+  jsonLoader: {
+    enforce?: any;
+    test?: any;
+    use?: any;
+    exclude?: any;
+  };
+  cssLoader?: {
+    enforce?: any;
+    test?: any;
+    use?: any;
+    exclude?: any;
+  };
+  htmlLoader?: {
+    enforce?: any;
+    test?: any;
+    use?: any;
+    exclude?: any;
+  };
+  fileLoader?: {
+    enforce?: any;
+    test?: any;
+    use?: any;
+    exclude?: any;
+  };
+};

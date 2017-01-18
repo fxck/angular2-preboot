@@ -1,4 +1,55 @@
+// helpers
 import { root } from './helpers.ts';
+
+// webpack
+import { LoaderOptionsPlugin } from 'webpack';
+
+// vendor
+import * as Autoprefixer from 'autoprefixer';
+import * as CssNano from 'cssnano';
+
+// custom environment configs
+export const CUSTOM_COMMON = {
+  PLUGINS: [
+
+  ],
+  RULES: [
+    // it is highly recommended to autoprefix and minify your CSS
+    new LoaderOptionsPlugin({
+      options: {
+        postcss: () => {
+          return [
+            Autoprefixer,
+            CssNano,
+          ];
+        },
+      },
+    }),
+  ]
+};
+
+export const CUSTOM_DEV = {
+  PLUGINS: [
+
+  ],
+  RULES: [
+
+  ]
+};
+
+export const CUSTOM_PROD = {
+  PLUGINS: [
+
+  ],
+  RULES: [
+
+  ]
+};
+
+// custom generic
+export const CUSTOM_COPY_FOLDERS = [
+
+];
 
 export const EXCLUDE_SOURCEMAPS = [
   // these packages have problems with their sourcemaps
@@ -6,55 +57,9 @@ export const EXCLUDE_SOURCEMAPS = [
   root('node_modules/rxjs'),
 ];
 
-export const CUSTOM_COPY_FOLDERS = [
-  // enable gestures
-  // { from: `node_modules/hammerjs/hammer.min.js` },
-  // { from: `node_modules/hammerjs/hammer.min.js.map` }
-];
-
-export const CUSTOM_PLUGINS_COMMON = [
-
-];
-
-export const CUSTOM_PLUGINS_DEV = [
-
-];
-
-export const CUSTOM_PLUGINS_PROD = [
-
-];
-
-export const CUSTOM_RULES_COMMON = [
-
-];
-
-export const CUSTOM_RULES_DEV = [
-
-];
-
-export const CUSTOM_RULES_PROD = [
-
-];
-
-export const CUSTOM_DEV_RULES = [
-
-];
-
-export const CUSTOM_PROD_RULES = [
-
-];
-
-export const CUSTOM_PROD_PLUGINS = [
-
-];
-
-export const CUSTOM_DEV_SERVER_OPTIONS = {
+export const DEV_SERVER_OPTIONS = {
   watchOptions: {
     aggregateTimeout: 300,
     poll: 1000,
   },
 };
-
-export const CUSTOM_DEV_PLUGINS = [
-
-];
