@@ -70,12 +70,10 @@ import {
 
 // custom
 import {
-  CUSTOM_COPY_FOLDERS,
-  CUSTOM_DEV_SERVER_OPTIONS,
-  CUSTOM_PLUGINS_COMMON,
-  CUSTOM_PLUGINS_DEV,
-  CUSTOM_PLUGINS_PROD,
-  CUSTOM_RULES_COMMON
+  COPY_FOLDERS as CUSTOM_COPY_FOLDERS,
+  DEV_SERVER_OPTIONS as CUSTOM_DEV_SERVER_OPTIONS,
+  PLUGINS as CUSTOM_PLUGINS,
+  RULES as CUSTOM_RULES
 } from './config/custom';
 
 // html
@@ -118,7 +116,7 @@ const commonConfig = () => {
       loader.htmlLoader,
       loader.fileLoader,
 
-      ...CUSTOM_RULES_COMMON,
+      ...CUSTOM_RULES.common,
 
     ],
   };
@@ -157,7 +155,7 @@ const commonConfig = () => {
       },
     }),
 
-    ...CUSTOM_PLUGINS_COMMON,
+    ...CUSTOM_PLUGINS.common,
   ];
 
   config.node = {
@@ -219,7 +217,7 @@ const devConfig = () => {
       defaultAttribute: 'defer'
     }),
 
-    ...CUSTOM_PLUGINS_DEV,
+    ...CUSTOM_PLUGINS.dev,
   ];
 
   if (isWebpackDevServer) {
@@ -344,7 +342,7 @@ const prodConfig = () => {
     }),
     new WebpackMd5Hash(),
 
-    ...CUSTOM_PLUGINS_PROD,
+    ...CUSTOM_PLUGINS.prod,
   ];
 
   if (isAoT) {
