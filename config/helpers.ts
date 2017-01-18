@@ -37,21 +37,32 @@ export const getMergedDefaultRules = (defaults, custom): any => {
     if (!custom[key]) {
       mergedConf[key] = defaults[key];
     } else {
-      const combinedSingleRule = {};
+      // tsLoader is a special case, since it's
+      // a function, so if you want to override it
+      // it will have to include all the loader
+      // options, none will be copied from the
+      // predefined loader, this fact is accomondated
+      // in webpack-options.d.ts, where at least
+      // `test` and `use` are required
+      if (key === 'tsLoader') {
+        mergedConf[key] = custom[key];
+      } else {
+        const combinedSingleRule = {};
 
-      rulesOptions.forEach(rule => {
-        // if the rule is defined, use it
-        if (custom[key][rule]) {
-          combinedSingleRule[rule] = custom[key][rule];
-        // if not, and it's not explicity `false`
-        // and it's defined in default rules, use
-        // the default rule
-        } else if (custom[key][rule] !== false && defaults[key][rule]) {
-          combinedSingleRule[rule] = defaults[key][rule];
-        }
-      });
+        rulesOptions.forEach(rule => {
+          // if the rule is defined, use it
+          if (custom[key][rule]) {
+            combinedSingleRule[rule] = custom[key][rule];
+          // if not, and it's not explicity `false`
+          // and it's defined in default rules, use
+          // the default rule
+          } else if (custom[key][rule] !== false && defaults[key][rule]) {
+            combinedSingleRule[rule] = defaults[key][rule];
+          }
+        });
 
-      mergedConf[key] = combinedSingleRule;
+        mergedConf[key] = combinedSingleRule;
+      }
     }
   });
 

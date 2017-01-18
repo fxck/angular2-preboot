@@ -21,8 +21,8 @@ export declare const RULES: {
     },
     tsLoader?: (aot: boolean) => {
       enforce?: any;
-      test?: any;
-      use?: any;
+      test: any;
+      use: any;
       exclude?: any;
     };
     jsonLoader: {
