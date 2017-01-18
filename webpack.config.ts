@@ -20,7 +20,6 @@ import {
   DefinePlugin,
   DllPlugin,
   DllReferencePlugin,
-  LoaderOptionsPlugin,
   ProgressPlugin
 } from 'webpack';
 
@@ -92,7 +91,6 @@ const COPY_FOLDERS = [
   { from: `src/meta` },
 
   ...CUSTOM_COPY_FOLDERS,
-
 ];
 
 // is dll
@@ -112,7 +110,6 @@ const commonConfig = () => {
       loader.fileLoader,
 
       ...CUSTOM_COMMON.RULES,
-
     ],
   };
 
@@ -134,7 +131,6 @@ const commonConfig = () => {
     }),
 
     ...CUSTOM_COMMON.PLUGINS,
-
   ];
 
   config.node = {
@@ -164,7 +160,6 @@ const devConfig = () => {
       loader.tsLoader(isAoT),
 
       ...CUSTOM_DEV.RULES
-
     ]
   };
 
@@ -205,7 +200,6 @@ const devConfig = () => {
     }),
 
     ...CUSTOM_DEV.PLUGINS,
-
   ];
 
   if (isWebpackDevServer) {
@@ -263,7 +257,6 @@ const prodConfig = () => {
       loader.tsLoader(isAoT),
 
       ...CUSTOM_PROD.RULES
-
     ]
   };
 

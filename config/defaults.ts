@@ -42,7 +42,7 @@ export const loader: DefaultsLoaders = {
     use: [
       'to-string-loader',
       'css-loader',
-      'postcss-loader'
+      // 'postcss-loader'
     ],
   }, htmlLoader: {
     test: /\.html$/,

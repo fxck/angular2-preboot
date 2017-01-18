@@ -11,9 +11,6 @@ import * as CssNano from 'cssnano';
 // custom environment configs
 export const CUSTOM_COMMON = {
   PLUGINS: [
-
-  ],
-  RULES: [
     // it is highly recommended to autoprefix and minify your CSS
     new LoaderOptionsPlugin({
       options: {
@@ -25,6 +22,9 @@ export const CUSTOM_COMMON = {
         },
       },
     }),
+  ],
+  RULES: [
+
   ]
 };
 
