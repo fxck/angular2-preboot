@@ -2,8 +2,10 @@
  * Angular bootstraping
  */
 import { platformBrowser } from '@angular/platform-browser';
-import { bootstrapDomReady } from '../config/helpers';
-import { decorateModuleRef } from './bootstrap';
+import {
+  bootstrapDomReady,
+  decorateModuleRef
+} from './bootstrap';
 
 /*
  * App Module

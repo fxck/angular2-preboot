@@ -2,8 +2,10 @@
  * Angular bootstraping
  */
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { bootstrapDomLoading } from '../config/helpers';
-import { decorateModuleRef } from './bootstrap';
+import {
+  bootstrapDomLoading,
+  decorateModuleRef
+} from './bootstrap';
 
 /*
  * App Module
