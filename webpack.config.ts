@@ -159,7 +159,7 @@ const defaultLoaderRules = {
 
 const mergedLoaderRules = getMergedDefaultRules(
   defaultLoaderRules,
-  CUSTOM_PLUGINS.defaults
+  CUSTOM_RULES.defaults
 );
 
 // common

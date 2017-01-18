@@ -11,13 +11,13 @@ export const COPY_FOLDERS = [
 ];
 
 export const PLUGINS = {
-  defaults: { },
   common: [ ],
   dev: [ ],
   prod: [ ]
 };
 
 export const RULES = {
+  defaults: { },
   common: [ ],
   dev: [ ],
   prod: [ ]

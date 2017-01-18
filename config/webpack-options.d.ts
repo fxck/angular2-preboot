@@ -1,6 +1,11 @@
 export declare const EXCLUDE_SOURCEMAPS: any[];
 export declare const COPY_FOLDERS: any[];
 export declare const PLUGINS: {
+  common: any[];
+  dev: any[];
+  prod: any[];
+};
+export declare const RULES: {
   defaults: {
     tsLintLoader?: {
       enforce?: any;
@@ -44,12 +49,7 @@ export declare const PLUGINS: {
       use?: any;
       exclude?: any;
     };
-  },
-  common: any[];
-  dev: any[];
-  prod: any[];
-};
-export declare const RULES: {
+  };
   common: any[];
   dev: any[];
   prod: any[];
