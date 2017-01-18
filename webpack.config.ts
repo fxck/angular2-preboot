@@ -12,6 +12,7 @@
 
 // node
 import * as process from 'process';
+import 'reflect-metadata';
 import 'ts-helpers';
 
 // webpack
