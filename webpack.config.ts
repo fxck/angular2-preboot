@@ -73,7 +73,6 @@ import {
 
 // html
 import { headTags } from './config/head';
-import { CUSTOM_COMMON, CUSTOM_PROD } from './config/custom';
 
 // config
 const EVENT = process.env.npm_lifecycle_event;
