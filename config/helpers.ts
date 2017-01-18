@@ -24,3 +24,36 @@ export const tryDll = (manifests) => {
       fs.accessSync(`dll/${manifest}-manifest.json`);
     }), 'dll');
 };
+
+export const getMergedDefaultRules = (defaults, custom): any => {
+  const keys = Object.keys(defaults);
+  const rulesOptions = ['enforce', 'use', 'test', 'exclude'];
+
+  const mergedConf = {};
+
+  keys.forEach(key => {
+    // if key is not defined in custom rules,
+    // add the default one
+    if (!custom[key]) {
+      mergedConf[key] = defaults[key];
+    } else {
+      const combinedSingleRule = {};
+
+      rulesOptions.forEach(rule => {
+        // if the rule is defined, use it
+        if (custom[key][rule]) {
+          combinedSingleRule[rule] = custom[key][rule];
+        // if not, and it's not explicity `false`
+        // and it's defined in default rules, use
+        // the default rule
+        } else if (custom[key][rule] !== false && defaults[key][rule]) {
+          combinedSingleRule[rule] = defaults[key][rule];
+        }
+      });
+
+      mergedConf[key] = combinedSingleRule;
+    }
+  });
+
+  return mergedConf;
+};

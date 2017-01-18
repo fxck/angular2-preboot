@@ -49,16 +49,12 @@ import * as webpackMerge from 'webpack-merge';
 import * as Autoprefixer from 'autoprefixer';
 import * as CssNano from 'cssnano';
 
-// custom
-import {
-  loader
-} from './config/webpack';
-
 // helpers
 import {
   isWebpackDevServer,
   root,
   tryDll,
+  getMergedDefaultRules,
 } from './config/helpers';
 
 // dll's
@@ -70,11 +66,12 @@ import {
 
 // custom
 import {
+  EXCLUDE_SOURCEMAPS as CUSTOM_EXCLUDE_SOURCEMAPS,
   COPY_FOLDERS as CUSTOM_COPY_FOLDERS,
   DEV_SERVER_OPTIONS as CUSTOM_DEV_SERVER_OPTIONS,
   PLUGINS as CUSTOM_PLUGINS,
   RULES as CUSTOM_RULES
-} from './config/custom';
+} from './config/webpack-options';
 
 // html
 import { headTags } from './config/head';
@@ -92,7 +89,7 @@ const PORT = process.env.PORT ||
 const HOST = process.env.HOST || 'localhost';
 
 const COPY_FOLDERS = [
-  { from: `src/assets`, ignore: [`favicon.ico`] },
+  { from: `src/assets`, ignore: [ `favicon.ico` ] },
   { from: `src/assets/icon/favicon.ico` },
   { from: `src/meta` },
 
@@ -102,8 +99,68 @@ const COPY_FOLDERS = [
 
 // is dll
 if (!isDll && isDev) {
-  tryDll(['polyfills', 'vendor', 'rxjs']);
+  tryDll([ 'polyfills', 'vendor', 'rxjs' ]);
 }
+
+const defaultLoaderRules = {
+  tsLintLoader: {
+    enforce: 'pre',
+    test: /\.ts$/,
+    use: [ 'tslint-loader' ]
+  },
+  sourceMapLoader: {
+    test: /\.js$/,
+    use: 'source-map-loader',
+    exclude: [ CUSTOM_EXCLUDE_SOURCEMAPS.map(itm => root(itm)) ]
+  },
+  tsLoader: (aot = false) => ({
+    test: /\.ts$/,
+    use: [
+      {
+        loader: 'awesome-typescript-loader',
+        options: {
+          configFileName: 'tsconfig.es2015.json'
+        }
+      },
+      'angular2-template-loader',
+      {
+        loader: 'ng-router-loader',
+        options: {
+          loader: 'async-system',
+          genDir: 'aot',
+          aot
+        }
+      }
+    ],
+    exclude: [ /\.(spec|e2e)\.ts$/ ],
+  }),
+  jsonLoader: {
+    test: /\.json$/,
+    use: 'json-loader',
+  },
+  cssLoader: {
+    test: /\.css$/,
+    use: [
+      'to-string-loader',
+      'css-loader',
+      'postcss-loader'
+    ],
+  },
+  htmlLoader: {
+    test: /\.html$/,
+    use: 'raw-loader',
+    exclude: [ root('src/index.html') ],
+  },
+  fileLoader: {
+    test: /\.(jpg|png|gif)$/,
+    use: 'file-loader',
+  }
+};
+
+const mergedLoaderRules = getMergedDefaultRules(
+  defaultLoaderRules,
+  CUSTOM_PLUGINS.defaults
+);
 
 // common
 const commonConfig = () => {
@@ -111,10 +168,10 @@ const commonConfig = () => {
 
   config.module = {
     rules: [
-      loader.jsonLoader,
-      loader.cssLoader,
-      loader.htmlLoader,
-      loader.fileLoader,
+      mergedLoaderRules.jsonLoader,
+      mergedLoaderRules.cssLoader,
+      mergedLoaderRules.htmlLoader,
+      mergedLoaderRules.fileLoader,
 
       ...CUSTOM_RULES.common,
 
@@ -181,13 +238,13 @@ const devConfig = () => {
 
   config.module = {
     rules: [
-      loader.tsLintLoader,
-      loader.tsLoader(isAoT)
+      mergedLoaderRules.tsLintLoader,
+      mergedLoaderRules.tsLoader(isAoT)
     ]
   };
 
   config.resolve = {
-    modules: [root(`src`), `node_modules`],
+    modules: [ root(`src`), `node_modules` ],
   };
 
   config.entry = {
@@ -201,7 +258,7 @@ const devConfig = () => {
     chunkFilename: '[id].chunk.js',
   };
 
-  COPY_FOLDERS.push({ from: `dll`, ignore: ['*.json'] });
+  COPY_FOLDERS.push({ from: `dll`, ignore: [ '*.json' ] });
 
   config.plugins = [
     new DllReferencePlugin({
@@ -273,7 +330,7 @@ const prodConfig = () => {
 
   config.module = {
     rules: [
-      loader.tsLoader(isAoT)
+      mergedLoaderRules.tsLoader(isAoT)
     ]
   };
 
@@ -300,7 +357,7 @@ const prodConfig = () => {
     // This enables tree shaking of the vendor modules
     new CommonsChunkPlugin({
       name: 'vendor',
-      chunks: ['main'],
+      chunks: [ 'main' ],
       minChunks: (module) => /node_modules\//.test(module.resource)
     }),
     new CommonsChunkPlugin({
