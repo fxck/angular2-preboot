@@ -136,8 +136,14 @@ const commonConfig = () => {
       /angular(\\|\/)core(\\|\/)src(\\|\/)linker/,
       root(`src`)
     ),
+    new HtmlWebpackPlugin({
+      inject: 'head',
+      template: `src/index.html`,
+      title: headTags.title
+    }),
     new HtmlHeadElementsPlugin({
-      headTags
+      meta: headTags.meta,
+      link: headTags.link
     }),
     new LoaderOptionsPlugin({
       debug: true,
@@ -207,11 +213,6 @@ const devConfig = () => {
     new DllReferencePlugin({
       context: '.',
       manifest: require(`./dll/vendor-manifest.json`),
-    }),
-    new HtmlWebpackPlugin({
-      inject: 'head',
-      template: 'src/index.html',
-      title: headTags.title
     }),
     new CopyWebpackPlugin(COPY_FOLDERS),
     new ScriptExtHtmlWebpackPlugin({
@@ -316,11 +317,6 @@ const prodConfig = () => {
       minRatio: 0.8,
     }),
     new CopyWebpackPlugin(COPY_FOLDERS),
-    new HtmlWebpackPlugin({
-      inject: 'head',
-      template: `src/index.html`,
-      title: headTags.title
-    }),
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'defer'
     }),
