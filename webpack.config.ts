@@ -142,8 +142,8 @@ const commonConfig = () => {
       title: headTags.title
     }),
     new HtmlHeadElementsPlugin({
-      meta: headTags.meta,
-      link: headTags.link
+      link: headTags.link,
+      meta: headTags.meta
     }),
     new LoaderOptionsPlugin({
       debug: true,
