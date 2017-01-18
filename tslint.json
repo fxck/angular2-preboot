@@ -26,6 +26,7 @@
     "use-output-property-decorator": true,
     "use-pipe-transform-interface": true,
     // Custom
+    "interface-name": [false, "always-prefix"],
     "trailing-comma": [false, {"multiline": "always", "singleline": "never"}],
     // General
     "no-console": [true,
