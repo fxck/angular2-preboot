@@ -59,7 +59,7 @@ import {
   polyfills,
   rxjs,
   vendor,
-} from './dll';
+} from './config/dll';
 
 // custom
 import {
