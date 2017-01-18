@@ -57,9 +57,12 @@ export const EXCLUDE_SOURCEMAPS = [
   root('node_modules/rxjs'),
 ];
 
-export const DEV_SERVER_OPTIONS = {
-  watchOptions: {
-    aggregateTimeout: 300,
-    poll: 1000,
+export const DEV_SERVER = {
+  OPTIONS: {
+    watchOptions: {
+      aggregateTimeout: 300,
+      poll: 1000,
+    }
   },
+  PORT: 3000
 };

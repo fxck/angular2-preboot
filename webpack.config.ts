@@ -67,7 +67,7 @@ import {
   CUSTOM_COPY_FOLDERS,
   CUSTOM_DEV,
   CUSTOM_PROD,
-  DEV_SERVER_OPTIONS
+  DEV_SERVER
 } from './config/custom';
 
 // html
@@ -81,9 +81,9 @@ const isDev = EVENT.includes('dev');
 const isDll = EVENT.includes('dll');
 const isAoT = !isDev;
 
-const PORT = process.env.PORT ||
-  ENV === 'development' ? 3000 : 8080;
-const HOST = process.env.HOST || 'localhost';
+const port = process.env.PORT ||
+  ENV === 'development' ? DEV_SERVER.PORT : 8080;
+const host = process.env.HOST || 'localhost';
 
 const COPY_FOLDERS = [
   { from: `src/assets`, ignore: [`favicon.ico`] },
@@ -206,10 +206,10 @@ const devConfig = () => {
     config.devServer = {
       contentBase: root(`src`),
       historyApiFallback: true,
-      host: HOST,
-      port: PORT,
+      host,
+      port,
 
-      ...DEV_SERVER_OPTIONS
+      ...DEV_SERVER.OPTIONS
     };
   }
 
