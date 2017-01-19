@@ -29,8 +29,8 @@ import {
 } from './custom';
 
 export const DefaultCopyFolders = [
-  { from: 'src/assets', ignore: ['favicon.ico'] },
-  { from: 'src/assets/icon/favicon.ico' },
+  { from: 'src/static', ignore: ['favicon.ico'] },
+  { from: 'src/static/icon/favicon.ico' },
   { from: 'src/meta' },
 ];
 

@@ -4,7 +4,7 @@ const path = require('path');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
-const ENV = process.env.NODE_ENV || 'testing';
+const __TESTING__ = true;
 
 module.exports = config => {
 
@@ -34,14 +34,14 @@ module.exports = config => {
      */
     files: [
       { pattern: './config/spec.js', watched: false },
-      { pattern: './src/assets/**/*', watched: false, included: false, served: true, nocache: false }
+      { pattern: './src/static/**/*', watched: false, included: false, served: true, nocache: false }
     ],
 
     /*
      * By default all assets are served at http://localhost:[PORT]/base/
      */
     proxies: {
-      "/assets/": "/base/src/assets/"
+      "/": "/base/src/static/",
     },
 
     /*
