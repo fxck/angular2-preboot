@@ -4,8 +4,6 @@ const path = require('path');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
-const __TESTING__ = true;
-
 module.exports = config => {
 
   config.set({
@@ -129,8 +127,7 @@ module.exports = config => {
        */
       plugins: [
         new DefinePlugin({
-          'ENV': JSON.stringify(ENV),
-          'process.env': JSON.stringify(process.env)
+          __TESTING: true
         }),
         new ContextReplacementPlugin(
           // The (\\|\/) piece accounts for path separators in *nix and Windows
