@@ -50,7 +50,9 @@ npm start
 # https://github.com/cnpm/cnpm
 ```
 
-Open [http://0.0.0.0:3000](http://0.0.0.0:3000) [http://localhost:3000](http://localhost:3000) in your favorite Browser.
+> You can run `npm run help` to all scripts available
+
+Open [http://0.0.0.0:3000](http://0.0.0.0:3000) or [http://localhost:3000](http://localhost:3000) in your favorite Browser.
 
 ## Preboot Generator
 
@@ -77,12 +79,19 @@ yo angular2-preboot
 ```
 npm start
 ```
-Open [http://0.0.0.0:3000](http://0.0.0.0:3000) [http://localhost:3000](http://localhost:3000) in your favorite Browser.
+Open [http://0.0.0.0:3000](http://0.0.0.0:3000) or [http://localhost:3000](http://localhost:3000) in your favorite Browser.
 
 ### Build and deploy your great project
+
+> We have a [Firebase](https://firebase.google.com/) config in the repo
+
 ```
-npm build && npm run build:docker
+# build the AoT version of your project
+npm run build:prod
+
+# build a ready to ship Docker for your project
+npm run build:docker
 ```
 
 # License
- [MIT](/LICENSE)
+[MIT](/LICENSE)
