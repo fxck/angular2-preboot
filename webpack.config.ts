@@ -42,10 +42,7 @@ import {
 
 // custom
 import {
-  CustomCommonConfig,
-  CustomDevConfig,
-  CustomProdConfig,
-  DevServerConfig
+  ProjectConfig
 } from './config/custom';
 
 // config
@@ -56,8 +53,10 @@ const envConfig = {
   isDev:  EVENT.includes('dev'),
   isDll:  EVENT.includes('dll'),
   isAoT:  !this.isDev,
-  port:   process.env.PORT ||
-    ENV === 'development' ? DevServerConfig.port : 8080,
+  port:   (process.env.PORT ||
+    ENV === 'development')
+    && ProjectConfig.devServer
+    && ProjectConfig.devServer.port ? ProjectConfig.devServer.port : 8080,
   host:   process.env.HOST || 'localhost'
 };
 
@@ -70,16 +69,24 @@ if (!envConfig.isDll && envConfig.isDev) {
 const commonConfig = () => {
   const config: WebpackConfig = <WebpackConfig> {};
 
+  const projectConfigCommonRules = ProjectConfig.build
+    && ProjectConfig.build.common
+    && ProjectConfig.build.common.rules ? ProjectConfig.build.common.rules : [];
+
+  const projectConfigCommonPlugins = ProjectConfig.build
+    && ProjectConfig.build.common
+    && ProjectConfig.build.common.plugins ? ProjectConfig.build.common.plugins : [];
+
   config.module = {
     rules: [
       ...DefaultCommonConfig(envConfig).rules,
-      ...CustomCommonConfig.rules,
+      ...projectConfigCommonRules,
     ],
   };
 
   config.plugins = [
     ...DefaultCommonConfig(envConfig).plugins,
-    ...CustomCommonConfig.plugins,
+    ...projectConfigCommonPlugins,
   ];
 
   config.node = {
@@ -103,16 +110,24 @@ const devConfig = () => {
 
   config.devtool = 'eval-source-map';
 
+  const projectConfigDevRules = ProjectConfig.build
+    && ProjectConfig.build.dev
+    && ProjectConfig.build.dev.rules ? ProjectConfig.build.dev.rules : [];
+
+  const projectConfigDevPlugins = ProjectConfig.build
+    && ProjectConfig.build.dev
+    && ProjectConfig.build.dev.plugins ? ProjectConfig.build.dev.plugins : [];
+
   config.module = {
     rules: [
       ...DefaultDevConfig(envConfig).rules,
-      ...CustomDevConfig.rules
+      ...projectConfigDevRules
     ]
   };
 
   config.plugins = [
     ...DefaultDevConfig(envConfig).plugins,
-    ...CustomDevConfig.plugins,
+    ...projectConfigDevPlugins
   ];
 
   config.resolve = {
@@ -131,13 +146,17 @@ const devConfig = () => {
   };
 
   if (isWebpackDevServer) {
+
+    const projectConfigDevServerOptions = ProjectConfig.devServer
+      && ProjectConfig.devServer.options ? ProjectConfig.devServer.options : {};
+
     config.devServer = {
       contentBase: root(`src`),
       historyApiFallback: true,
       host: envConfig.host,
       port: envConfig.port,
 
-      ...DevServerConfig.options
+      ...projectConfigDevServerOptions
     };
   }
 
@@ -177,10 +196,19 @@ const prodConfig = () => {
 
   config.devtool = 'source-map';
 
+  const projectConfigProdRules = ProjectConfig.build
+    && ProjectConfig.build.prod
+    && ProjectConfig.build.prod.rules ? ProjectConfig.build.prod.rules : [];
+
+  const projectConfigProdPlugins = ProjectConfig.build
+    && ProjectConfig.build.prod
+    && ProjectConfig.build.prod.plugins ? ProjectConfig.build.prod.plugins : [];
+
+
   config.module = {
     rules: [
       ...DefaultProdConfig(envConfig).rules,
-      ...CustomProdConfig.rules
+      ...projectConfigProdRules
     ]
   };
 
@@ -203,7 +231,7 @@ const prodConfig = () => {
 
   config.plugins = [
     ...DefaultProdConfig(envConfig).plugins,
-    ...CustomProdConfig.plugins,
+    ...projectConfigProdPlugins,
   ];
 
   if (envConfig.isAoT) {

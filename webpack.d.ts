@@ -1,3 +1,16 @@
+interface WebpackDevServerConfig {
+  contentBase?: string;
+  port?: number;
+  historyApiFallback?: boolean;
+  hot?: boolean;
+  inline?: boolean;
+  proxy?: any;
+  host?: string;
+  quiet?: boolean;
+  noInfo?: boolean;
+  watchOptions?: any;
+};
+
 interface WebpackConfig {
   cache?: boolean;
   target?: string;
@@ -17,18 +30,7 @@ interface WebpackConfig {
     extensions?: Array<string>;
     modules?: Array<string>;
   };
-  devServer?: {
-    contentBase?: string;
-    port?: number;
-    historyApiFallback?: boolean;
-    hot?: boolean;
-    inline?: boolean;
-    proxy?: any;
-    host?: string;
-    quiet?: boolean;
-    noInfo?: boolean;
-    watchOptions?: any;
-  };
+  devServer?: WebpackDevServerConfig;
   node?: {
     process?: boolean;
     global?: boolean;
@@ -44,20 +46,52 @@ interface WebpackConfig {
   };
 }
 
+interface IProjectConfig {
+  head?: {
+    link?: Array<{
+      rel?: string;
+      href?: string;
+      crossorigin?: string;
+      hreflang?: string;
+      media?: string;
+      rev?: string;
+      sizes?: string;
+      target?: string;
+      type?: string;
+    }>;
+    meta?: Array<{
+      charset?: string;
+      content?: string;
+      name?: string;
+      type?: string;
+      "=content"?: boolean;
+    }>;
+    title?: string;
+  };
+  build?: {
+    common?: {
+      plugins?: Array<any>;
+      rules?: Array<any>;
+    },
+    dev?: {
+      plugins?: Array<any>;
+      rules?: Array<any>;
+    };
+    prod?: {
+      plugins?: Array<any>;
+      rules?: Array<any>;
+    }
+  },
+  devServer?: {
+    options?: WebpackDevServerConfig;
+    port: number;
+  },
+  copy?: Array<{ from: string; to?: string; }>;
+}
+
 type DefaultConfig = {
   rules: any[];
   plugins: any[];
-}
-
-interface CustomConfig {
-  rules: any[];
-  plugins: any[];
-}
-
-interface HeadTags {
-  link?: any[];
-  meta?: any[];
-  title?: string;
 }
 
 interface DefaultsLoaders {

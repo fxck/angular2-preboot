@@ -24,8 +24,7 @@ import * as UglifyJsPlugin from 'webpack/lib/optimize/UglifyJsPlugin';
 import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 
 import {
-  CustomHeadTags,
-  CustomCopyFolders,
+  ProjectConfig
 } from './custom';
 
 export const DefaultCopyFolders = [
@@ -117,12 +116,19 @@ export const DefaultCommonConfig = ({isDev}): DefaultConfig => {
         root(`src`)
       ),
       new HtmlHeadElementsPlugin({
-        link: CustomHeadTags.link,
-        meta: CustomHeadTags.meta
+        link: ProjectConfig.head && ProjectConfig.head.link ? ProjectConfig.head.link : [],
+        meta: ProjectConfig.head && ProjectConfig.head.meta ? ProjectConfig.head.meta : []
+      }),
+      new HtmlWebpackPlugin({
+        inject: 'head',
+        template: 'src/index.html',
+        title: ProjectConfig.head && ProjectConfig.head.title ?  ProjectConfig.head.title : ''
       }),
     ]
   }
 };
+
+const projectConfigCopy = ProjectConfig.copy ? ProjectConfig.copy : [];
 
 export const DefaultDevConfig = ({isAoT}): DefaultConfig => {
   return {
@@ -139,14 +145,9 @@ export const DefaultDevConfig = ({isAoT}): DefaultConfig => {
         context: '.',
         manifest: require('../dll/vendor-manifest.json'),
       }),
-      new HtmlWebpackPlugin({
-        inject: 'head',
-        template: 'src/index.html',
-        title: CustomHeadTags.title
-      }),
       new CopyWebpackPlugin([
         ...DefaultCopyFolders,
-        ...CustomCopyFolders,
+        ...projectConfigCopy,
         { from: `dll`, ignore: ['*.json'] }
       ]),
       new ScriptExtHtmlWebpackPlugin({
@@ -183,13 +184,8 @@ export const DefaultProdConfig = ({isAoT}): DefaultConfig => {
       }),
       new CopyWebpackPlugin([
         ...DefaultCopyFolders,
-        ...CustomCopyFolders
+        ...projectConfigCopy,
       ]),
-      new HtmlWebpackPlugin({
-        inject: 'head',
-        template: `src/index.html`,
-        title: CustomHeadTags.title
-      }),
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: 'defer'
       }),
