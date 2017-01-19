@@ -189,7 +189,7 @@ const prodConfig = () => {
   };
 
   config.entry = {
-    main: `./src/browser.aot`,
+    main: './src/browser.aot',
     polyfills: polyfills(envConfig),
     rxjs: rxjs(),
   };

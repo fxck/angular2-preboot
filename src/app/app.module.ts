@@ -16,7 +16,6 @@ import { ROUTES } from './app.routes';
 
 // Application wide providers
 const APP_PROVIDERS = [
-
 ];
 
 /**
@@ -35,9 +34,7 @@ const APP_PROVIDERS = [
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     APP_PROVIDERS,
-  ],
-  entryComponents: [
-  ],
+  ]
 })
 export class AppModule {
   constructor(

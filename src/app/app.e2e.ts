@@ -8,29 +8,18 @@ describe('App', () => {
 
   beforeEach(() => {
     browser.get('/');
+    browser.waitForAngular();
   });
 
   it('should have a title', () => {
     let subject = browser.getTitle();
-    let result  = 'Angular 2 Preboot';
+    let result = 'Angular 2 Preboot';
     expect(subject).toEqual(result);
   });
 
-  it('should have header', () => {
-    let subject = element(by.css('h1')).isPresent();
-    let result  = true;
-    expect(subject).toEqual(result);
-  });
-
-  it('should have <my-home>', () => {
-    let subject = element(by.css('app home')).isPresent();
-    let result  = true;
-    expect(subject).toEqual(result);
-  });
-
-  it('should have buttons', () => {
-    let subject = element(by.css('button')).getText();
-    let result  = 'Submit Value';
+  it('should have a welcome message', () => {
+    let subject = element(by.css('.welcome')).isPresent();
+    let result = true;
     expect(subject).toEqual(result);
   });
 

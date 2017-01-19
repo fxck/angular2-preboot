@@ -82,7 +82,7 @@ export const loader: DefaultsLoaders = {
     use: [
       'to-string-loader',
       'css-loader',
-      // 'postcss-loader'
+      'postcss-loader'
     ],
   }, htmlLoader: {
     test: /\.html$/,
@@ -147,7 +147,7 @@ export const DefaultDevConfig = ({isAoT}): DefaultConfig => {
       new CopyWebpackPlugin([
         ...DefaultCopyFolders,
         ...CustomCopyFolders,
-        { from: `dll`, ignore: ['*.json'] }
+        { from: 'dll', ignore: ['*.json'] }
       ]),
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: 'defer'
@@ -187,7 +187,7 @@ export const DefaultProdConfig = ({isAoT}): DefaultConfig => {
       ]),
       new HtmlWebpackPlugin({
         inject: 'head',
-        template: `src/index.html`,
+        template: 'src/index.html',
         title: CustomHeadTags.title
       }),
       new ScriptExtHtmlWebpackPlugin({

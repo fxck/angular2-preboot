@@ -87,7 +87,7 @@ export const CustomHeadTags: HeadTags = {
     { name: 'theme-color', content: '#00bcd4' },
     { name: 'description', content: 'A teeny tiny Angular 2 template to get your next great project booted. It is powered by great ideas and Webpack 2. It does DLL, AoT, PostCss, Autoprefixer, and some other cool things.' },
   ],
-  title: 'Angular2 Preboot'
+  title: 'Angular 2 Preboot'
 }
 
 // copy folders
