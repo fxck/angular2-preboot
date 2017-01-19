@@ -10,21 +10,13 @@ import { RouterModule } from '@angular/router';
 /*
  * Platform and Environment providers/directives/pipes
  */
-import { AboutComponent } from './about';
 // App is our top level component
 import { AppComponent } from './app.component';
-import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { ROUTES } from './app.routes';
-import { AppState } from './app.service';
-import { HomeComponent } from './home';
-import { XLargeDirective } from './home/x-large';
-import { NoContentComponent } from './no-content';
 
 // Application wide providers
 const APP_PROVIDERS = [
-  AppState,
 
-  ...APP_RESOLVER_PROVIDERS,
 ];
 
 /**
@@ -33,11 +25,7 @@ const APP_PROVIDERS = [
 @NgModule({
   bootstrap: [AppComponent],
   declarations: [
-    AppComponent,
-    AboutComponent,
-    HomeComponent,
-    NoContentComponent,
-    XLargeDirective,
+    AppComponent
   ],
   imports: [ // import Angular's modules
     BrowserModule,
@@ -49,14 +37,11 @@ const APP_PROVIDERS = [
     APP_PROVIDERS,
   ],
   entryComponents: [
-    HomeComponent,
-    AboutComponent,
   ],
 })
 export class AppModule {
   constructor(
     public appRef: ApplicationRef,
-    public appState: AppState,
   ) { }
 
 }

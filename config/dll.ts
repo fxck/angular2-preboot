@@ -1,8 +1,13 @@
-// Polyfills
-export function polyfills(isDev?: boolean) {
+/**
+ * Dll's
+ *
+ * These are the libraries that should be resolved for the different environments
+ *
+ */
+export function polyfills({isDev}) {
 
   const common = [
-    // 'ie-shim',
+    // 'ie-shim'
 
     'core-js/es6/symbol',
     'core-js/es6/object',

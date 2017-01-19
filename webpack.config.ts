@@ -15,38 +15,8 @@ import * as process from 'process';
 import 'reflect-metadata';
 import 'ts-helpers';
 
-// webpack
-import {
-  ContextReplacementPlugin,
-  DefinePlugin,
-  DllPlugin,
-  DllReferencePlugin,
-  ProgressPlugin
-} from 'webpack';
-
-// optimization
-import * as NamedModulesPlugin from 'webpack/lib/NamedModulesPlugin';
-import * as CommonsChunkPlugin from 'webpack/lib/optimize/CommonsChunkPlugin';
-import * as OccurrenceOrderPlugin from 'webpack/lib/optimize/OccurrenceOrderPlugin';
-import * as UglifyJsPlugin from 'webpack/lib/optimize/UglifyJsPlugin';
-
-// loader
-import { TsConfigPathsPlugin } from 'awesome-typescript-loader';
-import { CheckerPlugin } from 'awesome-typescript-loader';
-
-// plugins
-import * as CompressionPlugin from 'compression-webpack-plugin';
-import * as CopyWebpackPlugin from 'copy-webpack-plugin';
-import { HtmlHeadElementsPlugin } from 'html-head-webpack-plugin';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import { NgcWebpackPlugin } from 'ngc-webpack';
-import * as ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin';
-import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
-import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as webpackMerge from 'webpack-merge';
-
-// defaults
-import { loader } from './config/defaults';
 
 // helpers
 import {
@@ -62,79 +32,54 @@ import {
   vendor,
 } from './config/dll';
 
+// defaults
+import {
+  DefaultCommonConfig,
+  DefaultDevConfig,
+  DefaultDllConfig,
+  DefaultProdConfig
+} from './config/defaults';
+
 // custom
 import {
-  CUSTOM_COMMON,
-  CUSTOM_COPY_FOLDERS,
-  CUSTOM_DEV,
-  CUSTOM_PROD,
-  DEV_SERVER
+  CustomCommonConfig,
+  CustomDevConfig,
+  CustomProdConfig,
+  DevServerConfig
 } from './config/custom';
-
-// html
-import { headTags } from './config/head';
 
 // config
 const EVENT = process.env.npm_lifecycle_event;
 const ENV = process.env.NODE_ENV || 'development';
 
-const isDev = EVENT.includes('dev');
-const isDll = EVENT.includes('dll');
-const isAoT = !isDev;
-
-const port = process.env.PORT ||
-  ENV === 'development' ? DEV_SERVER.PORT : 8080;
-const host = process.env.HOST || 'localhost';
-
-console.log('PORT', port);
-
-const COPY_FOLDERS = [
-  { from: `src/assets`, ignore: [`favicon.ico`] },
-  { from: `src/assets/icon/favicon.ico` },
-  { from: `src/meta` },
-
-  ...CUSTOM_COPY_FOLDERS,
-];
+const envConfig = {
+  isDev:  EVENT.includes('dev'),
+  isDll:  EVENT.includes('dll'),
+  isAoT:  !this.isDev,
+  port:   process.env.PORT ||
+    ENV === 'development' ? DevServerConfig.port : 8080,
+  host:   process.env.HOST || 'localhost'
+};
 
 // is dll
-if (!isDll && isDev) {
+if (!envConfig.isDll && envConfig.isDev) {
   tryDll(['polyfills', 'vendor', 'rxjs']);
 }
 
 // common
 const commonConfig = () => {
-  const config: WebpackConfig = <WebpackConfig>{};
+  const config: WebpackConfig = <WebpackConfig> {};
 
   config.module = {
     rules: [
-      loader.jsonLoader,
-      loader.cssLoader,
-      loader.htmlLoader,
-      loader.fileLoader,
-
-      ...CUSTOM_COMMON.RULES,
+      ...DefaultCommonConfig(envConfig).rules,
+      ...CustomCommonConfig.rules,
     ],
   };
 
   config.plugins = [
-    new ProgressPlugin(),
-    new CheckerPlugin(),
-    new TsConfigPathsPlugin(),
-    new DefinePlugin({
-      __DEV__: isDev,
-      __PROD__: !isDev
-    }),
-    new NamedModulesPlugin(),
-    new ContextReplacementPlugin(
-      /angular(\\|\/)core(\\|\/)src(\\|\/)linker/,
-      root(`src`)
-    ),
-    new HtmlHeadElementsPlugin({
-      link: headTags.link,
-      meta: headTags.meta
-    }),
-
-    ...CUSTOM_COMMON.PLUGINS,
+    ...DefaultCommonConfig(envConfig).plugins,
+    ...CustomCommonConfig.plugins,
   ];
 
   config.node = {
@@ -160,19 +105,22 @@ const devConfig = () => {
 
   config.module = {
     rules: [
-      loader.tsLintLoader,
-      loader.tsLoader(isAoT),
-
-      ...CUSTOM_DEV.RULES
+      ...DefaultDevConfig(envConfig).rules,
+      ...CustomDevConfig.rules
     ]
   };
+
+  config.plugins = [
+    ...DefaultDevConfig(envConfig).plugins,
+    ...CustomDevConfig.plugins,
+  ];
 
   config.resolve = {
     modules: [root(`src`), `node_modules`],
   };
 
   config.entry = {
-    main: [].concat(polyfills(isDev), './src/browser', rxjs()),
+    main: [].concat(polyfills(envConfig), './src/browser', rxjs()),
   };
 
   config.output = {
@@ -182,38 +130,14 @@ const devConfig = () => {
     chunkFilename: '[id].chunk.js',
   };
 
-  COPY_FOLDERS.push({ from: `dll`, ignore: ['*.json'] });
-
-  config.plugins = [
-    new DllReferencePlugin({
-      context: '.',
-      manifest: require(`./dll/polyfills-manifest.json`),
-    }),
-    new DllReferencePlugin({
-      context: '.',
-      manifest: require(`./dll/vendor-manifest.json`),
-    }),
-    new HtmlWebpackPlugin({
-      inject: 'head',
-      template: 'src/index.html',
-      title: headTags.title
-    }),
-    new CopyWebpackPlugin(COPY_FOLDERS),
-    new ScriptExtHtmlWebpackPlugin({
-      defaultAttribute: 'defer'
-    }),
-
-    ...CUSTOM_DEV.PLUGINS,
-  ];
-
   if (isWebpackDevServer) {
     config.devServer = {
       contentBase: root(`src`),
       historyApiFallback: true,
-      host,
-      port,
+      host: envConfig.host,
+      port: envConfig.port,
 
-      ...DEV_SERVER.OPTIONS
+      ...DevServerConfig.options
     };
   }
 
@@ -226,7 +150,7 @@ const dllConfig = () => {
   const config: WebpackConfig = <WebpackConfig> {};
 
   config.entry = {
-    polyfills: polyfills(isDev),
+    polyfills: polyfills(envConfig.isDev),
     rxjs: rxjs(),
     vendor: vendor(),
   };
@@ -239,10 +163,7 @@ const dllConfig = () => {
   };
 
   config.plugins = [
-    new DllPlugin({
-      name: '__[name]',
-      path: root('dll/[name]-manifest.json'),
-    }),
+    ...DefaultDllConfig().plugins
   ];
 
   return config;
@@ -258,9 +179,8 @@ const prodConfig = () => {
 
   config.module = {
     rules: [
-      loader.tsLoader(isAoT),
-
-      ...CUSTOM_PROD.RULES
+      ...DefaultProdConfig(envConfig).rules,
+      ...CustomProdConfig.rules
     ]
   };
 
@@ -270,7 +190,7 @@ const prodConfig = () => {
 
   config.entry = {
     main: `./src/browser.aot`,
-    polyfills: polyfills(isDev),
+    polyfills: polyfills(envConfig),
     rxjs: rxjs(),
   };
 
@@ -282,65 +202,14 @@ const prodConfig = () => {
   };
 
   config.plugins = [
-    new V8LazyParseWebpackPlugin(),
-    // new NoEmitOnErrorsPlugin(), // quality
-    // This enables tree shaking of the vendor modules
-    new CommonsChunkPlugin({
-      name: 'vendor',
-      chunks: ['main'],
-      minChunks: (module) => /node_modules\//.test(module.resource)
-    }),
-    new CommonsChunkPlugin({
-      name: ['polyfills', 'vendor', 'rxjs'].reverse(),
-    }),
-    new OccurrenceOrderPlugin(),
-    new CompressionPlugin({
-      asset: '[path].gz[query]',
-      algorithm: 'gzip',
-      test: /\.js$|\.html$/,
-      threshold: 2 * 1024,
-      minRatio: 0.8,
-    }),
-    new CopyWebpackPlugin(COPY_FOLDERS),
-    new HtmlWebpackPlugin({
-      inject: 'head',
-      template: `src/index.html`,
-      title: headTags.title
-    }),
-    new ScriptExtHtmlWebpackPlugin({
-      defaultAttribute: 'defer'
-    }),
-    new UglifyJsPlugin({
-      beautify: false,
-      mangle: {
-        screw_ie8: true,
-        keep_fnames: true,
-      },
-      compress: {
-        comparisons: true,
-        conditionals: true,
-        dead_code: true,
-        drop_console: true,
-        evaluate: true,
-        if_return: true,
-        join_vars: true,
-        negate_iife: false, // we need this for lazy v8
-        screw_ie8: true,
-        sequences: true,
-        unused: true,
-        warnings: false
-      },
-      comments: false,
-    }),
-    new WebpackMd5Hash(),
-
-    ...CUSTOM_PROD.PLUGINS,
+    ...DefaultProdConfig(envConfig).plugins,
+    ...CustomProdConfig.plugins,
   ];
 
-  if (isAoT) {
+  if (envConfig.isAoT) {
     config.plugins.unshift(
       new NgcWebpackPlugin({
-        disabled: !isAoT,
+        disabled: !envConfig.isAoT,
         tsConfig: root('tsconfig.es2015.json'),
         resourceOverride: ''
       }));
@@ -369,7 +238,7 @@ switch (ENV) {
   case 'dev':
   case 'development':
   default:
-    module.exports = isDll
+    module.exports = envConfig.isDll
       ? webpackMerge({}, defaultConfig(), commonConfig(), dllConfig())
       : webpackMerge({}, defaultConfig(), commonConfig(), devConfig());
 }

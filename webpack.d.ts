@@ -44,6 +44,21 @@ interface WebpackConfig {
   };
 }
 
+type DefaultConfig = {
+  rules: any[];
+  plugins: any[];
+}
+
+interface CustomConfig {
+  rules: any[];
+  plugins: any[];
+}
+
+interface HeadTags {
+  link?: any[];
+  meta?: any[];
+  title?: string;
+}
 
 interface DefaultsLoaders {
   tsLintLoader?: {

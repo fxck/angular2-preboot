@@ -7,7 +7,6 @@ import {
 
 // Load the implementations that should be tested
 import { AppComponent } from './app.component';
-import { AppState } from './app.service';
 
 describe(`App`, () => {
   let comp: AppComponent;
@@ -18,7 +17,6 @@ describe(`App`, () => {
     TestBed.configureTestingModule({
       declarations: [ AppComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [AppState],
     })
     .compileComponents(); // compile template and css
   }));
@@ -31,8 +29,12 @@ describe(`App`, () => {
     fixture.detectChanges(); // trigger initial data binding
   });
 
-  it(`should have a url`, () => {
+  it(`should have the title 'Angular 2 Preboot'`, () => {
     expect(comp.name).toEqual('Angular 2 Preboot');
+  });
+
+  it(`should have the @Angular logo`, () => {
+    expect(comp.logo).toEqual('/img/angular.png');
   });
 
 });
