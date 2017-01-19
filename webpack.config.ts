@@ -86,6 +86,8 @@ const port = process.env.PORT ||
   ENV === 'development' ? DEV_SERVER.PORT : 8080;
 const host = process.env.HOST || 'localhost';
 
+console.log('PORT', port);
+
 const COPY_FOLDERS = [
   { from: `src/assets`, ignore: [`favicon.ico`] },
   { from: `src/assets/icon/favicon.ico` },
@@ -128,7 +130,8 @@ const commonConfig = () => {
       root(`src`)
     ),
     new HtmlHeadElementsPlugin({
-      headTags
+      link: headTags.link,
+      meta: headTags.meta
     }),
 
     ...CUSTOM_COMMON.PLUGINS,
