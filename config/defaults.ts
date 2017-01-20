@@ -93,7 +93,6 @@ export const loader: DefaultsLoaders = {
 export const DefaultCommonConfig = ({isDev}): DefaultConfig => {
   return {
     rules: [
-      loader.jsonLoader,
       loader.cssLoader,
       loader.htmlLoader,
       loader.fileLoader,
