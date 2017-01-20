@@ -95,10 +95,6 @@ module.exports = config => {
             ],
             exclude: [/\.e2e\.ts$/]
           }, {
-            test: /\.json$/,
-            use: 'json-loader',
-            exclude: [helpers.root('src/index.html')]
-          }, {
             test: /\.css$/,
             use: ['to-string-loader', 'css-loader'],
             exclude: [helpers.root('src/index.html')]

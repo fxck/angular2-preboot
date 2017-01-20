@@ -193,10 +193,7 @@ export const DefaultProdConfig = ({isAoT}): DefaultConfig => {
       }),
       new UglifyJsPlugin({
         beautify: false,
-        mangle: {
-          screw_ie8: true,
-          keep_fnames: true,
-        },
+        comments: false,
         compress: {
           comparisons: true,
           conditionals: true,
@@ -211,7 +208,10 @@ export const DefaultProdConfig = ({isAoT}): DefaultConfig => {
           unused: true,
           warnings: false
         },
-        comments: false,
+        mangle: {
+          screw_ie8: true,
+          keep_fnames: true,
+        }
       }),
       new WebpackMd5Hash(),
     ]
