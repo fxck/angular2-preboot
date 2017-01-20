@@ -79,12 +79,6 @@ interface DefaultsLoaders {
     use: any;
     exclude?: any;
   };
-  jsonLoader: {
-    enforce?: any;
-    test?: any;
-    use?: any;
-    exclude?: any;
-  };
   cssLoader?: {
     enforce?: any;
     test?: any;

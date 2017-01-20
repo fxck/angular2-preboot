@@ -72,10 +72,6 @@ export const loader: DefaultsLoaders = {
     ],
     exclude: [/\.(spec|e2e)\.ts$/],
   }),
-  jsonLoader: {
-    test: /\.json$/,
-    use: 'json-loader',
-  },
   cssLoader: {
     test: /\.css$/,
     use: [
