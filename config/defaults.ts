@@ -19,9 +19,8 @@ import * as WebpackMd5Hash from 'webpack-md5-hash';
 import * as CommonsChunkPlugin from 'webpack/lib/optimize/CommonsChunkPlugin';
 import * as CompressionPlugin from 'compression-webpack-plugin';
 import * as NamedModulesPlugin from 'webpack/lib/NamedModulesPlugin';
-import * as OccurrenceOrderPlugin from 'webpack/lib/optimize/OccurrenceOrderPlugin';
 import * as UglifyJsPlugin from 'webpack/lib/optimize/UglifyJsPlugin';
-import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
+// import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 
 import {
   CustomHeadTags,
@@ -162,7 +161,7 @@ export const DefaultProdConfig = ({isAoT}): DefaultConfig => {
       loader.tsLoader(isAoT),
     ],
     plugins: [
-      new V8LazyParseWebpackPlugin(),
+      // new V8LazyParseWebpackPlugin(),
       // new NoEmitOnErrorsPlugin(), // quality
       // This enables tree shaking of the vendor modules
       new CommonsChunkPlugin({
@@ -173,7 +172,6 @@ export const DefaultProdConfig = ({isAoT}): DefaultConfig => {
       new CommonsChunkPlugin({
         name: ['polyfills', 'vendor', 'rxjs'].reverse(),
       }),
-      new OccurrenceOrderPlugin(),
       new CompressionPlugin({
         asset: '[path].gz[query]',
         algorithm: 'gzip',
