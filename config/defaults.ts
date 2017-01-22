@@ -183,7 +183,12 @@ export const DefaultProdConfig = ({isAoT}): DefaultConfig => {
       new HtmlWebpackPlugin({
         inject: 'head',
         template: 'src/index.html',
-        title: CustomHeadTags.title
+        title: CustomHeadTags.title,
+        minify: {
+          minifyJS: true,
+          removeComments: true,
+          collapseWhitespace: true
+        }
       }),
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: 'defer'
