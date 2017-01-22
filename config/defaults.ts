@@ -54,21 +54,21 @@ export const loader: DefaultsLoaders = {
   tsLoader: (aot = false) => ({
     test: /\.ts$/,
     use: [
-      {
-        loader: 'awesome-typescript-loader',
-        options: {
-          configFileName: 'tsconfig.es2015.json'
-        }
-      },
       'angular2-template-loader',
-      {
+      { //
         loader: 'ng-router-loader',
         options: {
           loader: 'async-system',
           genDir: 'aot',
           aot
         }
-      }
+      },
+      {
+        loader: 'awesome-typescript-loader',
+        options: {
+          configFileName: 'tsconfig.es2015.json'
+        }
+      },
     ],
     exclude: [/\.(spec|e2e)\.ts$/],
   }),
