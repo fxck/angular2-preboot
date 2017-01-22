@@ -62,7 +62,7 @@ export const CustomProdConfig: CustomConfig = {
 
 // head
 export const CustomHeadTags: HeadTags = {
-  link: [
+  link: [ // this will be mapted to a type of head elements (e.g. link)
     { rel: 'apple-touch-icon', sizes: '57x57', href: '/icon/apple-icon-57x57.png' },
     { rel: 'apple-touch-icon', sizes: '60x60', href: '/icon/apple-icon-60x60.png' },
     { rel: 'apple-touch-icon', sizes: '72x72', href: '/icon/apple-icon-72x72.png' },
