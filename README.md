@@ -7,7 +7,7 @@
 
 # Angular 2.x Preboot
 
-> An [Angular 2](https://angular.io) template that has a lot of features and is driven by great spirit.
+> An [Angular 2](https://angular.io) boilerplate, that has a lot of features and is driven by great spirit.
 
 ## Features
 
@@ -28,9 +28,10 @@
 
 ## Quick Start
 
-> We support Node.js `>= 6.9.1` and NPM `>= 3.x`
+> We support Node.js `>= 6.9.1`, NPM `>= 3.x` [Yarn](https://yarnpkg.com)
+> If you downgrade to `protractor@4.9.x` you could run the boilerplate in Node `> 4.7.x`
 > We recommend and support [Visual Studio Code](https://code.visualstudio.com/)
-> We recommend to use [NVM](https://github.com/creationix/nvm) to manage your Node.js version and depencies
+> We recommend to use [NVM](https://github.com/creationix/nvm) to manage your Node.js version and dependencies
 
 ```
 # clone the repo
@@ -40,17 +41,17 @@ git clone --depth 1 https://github.com/katallaxie/angular2-preboot.git
 # change to repo folder
 cd angular2-preboot
 
-# install the repo with npm
+# install the repo with npm, or yarn
 npm install
 
-# start the server
+# start the webpack-dev-server
 npm start
 
 # if you're in China use cnpm
 # https://github.com/cnpm/cnpm
 ```
 
-> You can run `npm run help` to all scripts available
+> You can run `npm run help` to see all available scripts
 
 Open [http://0.0.0.0:3000](http://0.0.0.0:3000) or [http://localhost:3000](http://localhost:3000) in your favorite Browser.
 
@@ -79,6 +80,7 @@ yo angular2-preboot
 ```
 npm start
 ```
+
 Open [http://0.0.0.0:3000](http://0.0.0.0:3000) or [http://localhost:3000](http://localhost:3000) in your favorite Browser.
 
 ### Build and deploy your great project
@@ -91,6 +93,21 @@ npm run build:prod
 
 # build a ready to ship Docker for your project
 npm run build:docker
+```
+
+### Testing is import for quality products
+
+> We have [Karma](https://karma-runner.github.io/) and [Protractor](http://www.protractortest.org/) in place
+
+```
+# run your unit tests
+npm run tests
+
+# or develop with unit tests in the loop
+npm run watch:test
+
+# run your e2e tests
+npm run e2e
 ```
 
 # License

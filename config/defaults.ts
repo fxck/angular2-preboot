@@ -54,21 +54,21 @@ export const loader: DefaultsLoaders = {
   tsLoader: (aot = false) => ({
     test: /\.ts$/,
     use: [
-      {
-        loader: 'awesome-typescript-loader',
-        options: {
-          configFileName: 'tsconfig.es2015.json'
-        }
-      },
       'angular2-template-loader',
-      {
+      { //
         loader: 'ng-router-loader',
         options: {
           loader: 'async-system',
           genDir: 'aot',
           aot
         }
-      }
+      },
+      {
+        loader: 'awesome-typescript-loader',
+        options: {
+          configFileName: 'tsconfig.es2015.json'
+        }
+      },
     ],
     exclude: [/\.(spec|e2e)\.ts$/],
   }),
@@ -162,7 +162,7 @@ export const DefaultProdConfig = ({isAoT}): DefaultConfig => {
       new CommonsChunkPlugin({
         name: 'vendor',
         chunks: ['main'],
-        minChunks: (module) => /node_modules\//.test(module.resource)
+        minChunks: (module) => /node_modules\/(?!rxjs)/.test(module.resource)
       }),
       new CommonsChunkPlugin({
         name: ['polyfills', 'vendor', 'rxjs'].reverse(),

@@ -68,6 +68,6 @@ export function rxjs() {
     'rxjs/BehaviorSubject',
     'rxjs/add/operator/map',
     'rxjs/add/operator/mergeMap',
-    'rxjs/add/operator/distinctUntilChanged',
+    'rxjs/add/operator/distinctUntilChanged'
   ];
 }
