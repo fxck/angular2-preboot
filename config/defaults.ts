@@ -20,7 +20,7 @@ import * as CommonsChunkPlugin from 'webpack/lib/optimize/CommonsChunkPlugin';
 import * as CompressionPlugin from 'compression-webpack-plugin';
 import * as NamedModulesPlugin from 'webpack/lib/NamedModulesPlugin';
 import * as UglifyJsPlugin from 'webpack/lib/optimize/UglifyJsPlugin';
-// import * as V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
+import * as OptimizeJsPlugin from 'optimize-js-plugin';
 
 import {
   CustomHeadTags,
@@ -156,7 +156,9 @@ export const DefaultProdConfig = ({isAoT}): DefaultConfig => {
       loader.tsLoader(isAoT),
     ],
     plugins: [
-      // new V8LazyParseWebpackPlugin(),
+      new OptimizeJsPlugin({
+        sourceMap: false
+      }),
       // new NoEmitOnErrorsPlugin(), // quality
       // This enables tree shaking of the vendor modules
       new CommonsChunkPlugin({
