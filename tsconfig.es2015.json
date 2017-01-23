@@ -19,6 +19,9 @@
     "types": [
       "hammerjs",
       "node"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
     ]
   },
   "exclude": [

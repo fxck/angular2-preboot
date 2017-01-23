@@ -55,11 +55,13 @@ const ENV = process.env.NODE_ENV || 'development';
 const envConfig = {
   isDev:  EVENT.includes('dev'),
   isDll:  EVENT.includes('dll'),
-  isAoT:  !this.isDev,
+  isAoT:  !EVENT.includes('dev'),
   port:   process.env.PORT ||
     ENV === 'development' ? DevServerConfig.port : 8080,
   host:   process.env.HOST || 'localhost'
 };
+
+console.log(envConfig);
 
 // is dll
 if (!envConfig.isDll && envConfig.isDev) {

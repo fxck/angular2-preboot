@@ -57,7 +57,7 @@ export const loader: DefaultsLoaders = {
       { //
         loader: 'ng-router-loader',
         options: {
-          loader: 'async-import',
+          loader: 'async-system',
           genDir: 'aot',
           aot
         }
