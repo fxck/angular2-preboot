@@ -61,8 +61,6 @@ const envConfig = {
   host:   process.env.HOST || 'localhost'
 };
 
-console.log(envConfig);
-
 // is dll
 if (!envConfig.isDll && envConfig.isDev) {
   tryDll(['polyfills', 'vendor', 'rxjs']);
