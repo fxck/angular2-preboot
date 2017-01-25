@@ -164,7 +164,7 @@ export const DefaultProdConfig = ({isAoT}): DefaultConfig => {
       new CommonsChunkPlugin({
         name: 'vendor',
         chunks: ['main'],
-        minChunks: (module) => /node_modules\//.test(module.resource)
+        minChunks: (module) => /node_modules/.test(module.resource)
       }),
       new CommonsChunkPlugin({
         name: ['polyfills', 'vendor', 'rxjs'].reverse(),
