@@ -13,7 +13,6 @@ import { TsConfigPathsPlugin } from 'awesome-typescript-loader';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin';
-import * as WebpackMd5Hash from 'webpack-md5-hash';
 
 // optimization
 import * as CommonsChunkPlugin from 'webpack/lib/optimize/CommonsChunkPlugin';
@@ -215,7 +214,6 @@ export const DefaultProdConfig = ({isAoT}): DefaultConfig => {
           keep_fnames: true,
         }
       }),
-      new WebpackMd5Hash(),
     ]
   }
 };
