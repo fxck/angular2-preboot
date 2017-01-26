@@ -85,11 +85,7 @@
     "@angular/language-service": "^2.4.5",
     "@types/hammerjs": "^2.0.33",
     "@types/jasmine": "^2.5.41",
-<<<<<<< HEAD
-    "@types/node": "^7.0.3",
-=======
     "@types/node": "^7.0.4",
->>>>>>> ~ updating deps
     "@types/selenium-webdriver": "^2.53.37",
     "@types/source-map": "^0.5.0",
     "@types/uglify-js": "^2.0.27",
