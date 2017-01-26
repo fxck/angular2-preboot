@@ -7,6 +7,8 @@
 
 # Angular 2.x Preboot
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/katallaxie/angular2-preboot.svg)](https://greenkeeper.io/)
+
 > An [Angular 2](https://angular.io) boilerplate, that has a lot of features and is driven by great spirit.
 
 ## Features
