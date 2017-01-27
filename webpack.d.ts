@@ -85,6 +85,12 @@ interface DefaultsLoaders {
     use?: any;
     exclude?: any;
   };
+  sassLoader?: {
+    enforce?: any;
+    test?: any;
+    use?: any;
+    exclude?: any;
+  };
   htmlLoader?: {
     enforce?: any;
     test?: any;

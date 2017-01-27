@@ -4,6 +4,7 @@
 import { ViewEncapsulation } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 /*
  * App Component
@@ -19,6 +20,8 @@ export class AppComponent implements OnInit {
 
   public name = 'Angular 2 Preboot';
   public logo = '/img/angular.png';
+
+  public form = new FormControl();
 
   public ngOnInit() {
     console.log(`Initializing 'AppComponent'`);

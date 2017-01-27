@@ -54,6 +54,7 @@ export function vendor() {
     '@angular/core',
     '@angular/http',
 
+    'md2',
     // import in bootstrap file
     'hammerjs'
   ];

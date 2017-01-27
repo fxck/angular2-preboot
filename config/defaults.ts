@@ -78,7 +78,17 @@ export const loader: DefaultsLoaders = {
       'css-loader',
       'postcss-loader'
     ],
-  }, htmlLoader: {
+  },
+  sassLoader: {
+    test: /\.scss$/,
+    use: [
+      'to-string-loader',
+      'css-loader',
+      'postcss-loader',
+      'sass-loader'
+    ],
+  },
+  htmlLoader: {
     test: /\.html$/,
     use: 'raw-loader',
     exclude: [root('src/index.html')],
@@ -93,6 +103,7 @@ export const DefaultCommonConfig = ({isDev}): DefaultConfig => {
   return {
     rules: [
       loader.cssLoader,
+      loader.sassLoader,
       loader.htmlLoader,
       loader.fileLoader,
     ],
